@@ -1,0 +1,72 @@
+{
+  "id": "4852889",
+  "name": "service",
+  "font_family": "iconfont",
+  "css_prefix_text": "icon-",
+  "description": "",
+  "glyphs": [
+    {
+      "icon_id": "172457",
+      "name": "secret",
+      "font_class": "secret",
+      "unicode": "e703",
+      "unicode_decimal": 59139
+    },
+    {
+      "icon_id": "6176552",
+      "name": "存储",
+      "font_class": "cunchu",
+      "unicode": "e61d",
+      "unicode_decimal": 58909
+    },
+    {
+      "icon_id": "11477461",
+      "name": "功能服务发布1",
+      "font_class": "gongnengfuwufabu",
+      "unicode": "e675",
+      "unicode_decimal": 58997
+    },
+    {
+      "icon_id": "24243839",
+      "name": "pvc",
+      "font_class": "pvc",
+      "unicode": "e605",
+      "unicode_decimal": 58885
+    },
+    {
+      "icon_id": "32420182",
+      "name": "configmap",
+      "font_class": "configmap",
+      "unicode": "e6eb",
+      "unicode_decimal": 59115
+    },
+    {
+      "icon_id": "38185646",
+      "name": "服务发布管理",
+      "font_class": "fuwufabuguanli",
+      "unicode": "e674",
+      "unicode_decimal": 58996
+    },
+    {
+      "icon_id": "40050381",
+      "name": "k8S-pv",
+      "font_class": "k8S-pv",
+      "unicode": "e7db",
+      "unicode_decimal": 59355
+    },
+    {
+      "icon_id": "40493320",
+      "name": "k8s_ingress",
+      "font_class": "k8s_ingress",
+      "unicode": "e7c6",
+      "unicode_decimal": 59334
+    },
+    {
+      "icon_id": "42901169",
+      "name": "k8s_service",
+      "font_class": "k8s_service",
+      "unicode": "e650",
+      "unicode_decimal": 58960
+    }
+  ]
+}

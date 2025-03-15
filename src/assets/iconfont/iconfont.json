@@ -1,0 +1,23 @@
+{
+  "id": "4821692",
+  "name": "ccj",
+  "font_family": "iconfont",
+  "css_prefix_text": "icon-",
+  "description": "",
+  "glyphs": [
+    {
+      "icon_id": "12594570",
+      "name": "产品管理",
+      "font_class": "chanpinguanli",
+      "unicode": "e722",
+      "unicode_decimal": 59170
+    },
+    {
+      "icon_id": "6970030",
+      "name": "用户",
+      "font_class": "yonghu",
+      "unicode": "e705",
+      "unicode_decimal": 59141
+    }
+  ]
+}

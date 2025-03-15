@@ -1,0 +1,58 @@
+{
+  "id": "4833930",
+  "name": "调度资源",
+  "font_family": "iconfont",
+  "css_prefix_text": "icon-",
+  "description": "",
+  "glyphs": [
+    {
+      "icon_id": "4766849",
+      "name": "deployment unit",
+      "font_class": "deploymentunit",
+      "unicode": "e7d2",
+      "unicode_decimal": 59346
+    },
+    {
+      "icon_id": "7682473",
+      "name": "状态",
+      "font_class": "zhuangtai",
+      "unicode": "e629",
+      "unicode_decimal": 58921
+    },
+    {
+      "icon_id": "7811804",
+      "name": "deploy",
+      "font_class": "deploy",
+      "unicode": "e61e",
+      "unicode_decimal": 58910
+    },
+    {
+      "icon_id": "8156726",
+      "name": "容器",
+      "font_class": "rongqi",
+      "unicode": "e63b",
+      "unicode_decimal": 58939
+    },
+    {
+      "icon_id": "8478125",
+      "name": "部署",
+      "font_class": "bushu",
+      "unicode": "e67a",
+      "unicode_decimal": 59002
+    },
+    {
+      "icon_id": "8766122",
+      "name": "任务",
+      "font_class": "renwu",
+      "unicode": "e60b",
+      "unicode_decimal": 58891
+    },
+    {
+      "icon_id": "22247933",
+      "name": "调度管理",
+      "font_class": "tiaoduguanli",
+      "unicode": "e676",
+      "unicode_decimal": 58998
+    }
+  ]
+}

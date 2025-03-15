@@ -1,0 +1,3 @@
+#.会自动换域名
+VITE_BASE_URL="./api"
+

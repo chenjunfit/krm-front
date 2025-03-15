@@ -1,0 +1,72 @@
+{
+  "id": "4858378",
+  "name": "配置管理",
+  "font_family": "iconfont",
+  "css_prefix_text": "icon-",
+  "description": "",
+  "glyphs": [
+    {
+      "icon_id": "3978411",
+      "name": "配置管理",
+      "font_class": "peizhiguanli",
+      "unicode": "e677",
+      "unicode_decimal": 58999
+    },
+    {
+      "icon_id": "8315707",
+      "name": "config-map",
+      "font_class": "config-map",
+      "unicode": "e79c",
+      "unicode_decimal": 59292
+    },
+    {
+      "icon_id": "10110191",
+      "name": "存储卷",
+      "font_class": "cunchujuan",
+      "unicode": "e61e",
+      "unicode_decimal": 58910
+    },
+    {
+      "icon_id": "17783692",
+      "name": "secret",
+      "font_class": "secret",
+      "unicode": "e638",
+      "unicode_decimal": 58936
+    },
+    {
+      "icon_id": "18552744",
+      "name": "实用工具",
+      "font_class": "shiyonggongju",
+      "unicode": "e621",
+      "unicode_decimal": 58913
+    },
+    {
+      "icon_id": "19567446",
+      "name": "存储管理",
+      "font_class": "32cunchuguanli",
+      "unicode": "e69d",
+      "unicode_decimal": 59037
+    },
+    {
+      "icon_id": "37732539",
+      "name": "存储卷(pv)",
+      "font_class": "a-cunchujuanpv",
+      "unicode": "e81e",
+      "unicode_decimal": 59422
+    },
+    {
+      "icon_id": "37879924",
+      "name": "存储卷声明(pvc)",
+      "font_class": "a-cunchujuanshengmingpvc",
+      "unicode": "e845",
+      "unicode_decimal": 59461
+    },
+    {
+      "icon_id": "40050381",
+      "name": "k8S-pv",
+      "font_class": "k8S-pv",
+      "unicode": "e7db",
+      "unicode_decimal": 59355
+    }
+  ]
+}
