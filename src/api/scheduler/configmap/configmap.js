@@ -6,7 +6,7 @@ export const getConfigMapList=(clusterId,nameSpace)=>{
     )
 }
 export const getConfigMap=(data)=>{
-    return request(API_CONFIG.deploymentGetApi,'get',data,
+    return request(API_CONFIG.configMapGetApi,'get',data,
         2000
     )
 }

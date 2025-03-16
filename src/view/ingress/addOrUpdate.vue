@@ -30,7 +30,7 @@
                     <el-row :gutter="10">
                         <el-col :span="8">
                             <el-form-item label="Ingress名称" prop="metadata.name" required :rules="rules.name">
-                                <el-input v-model="item.metadata.name"/>
+                                <el-input v-model="item.metadata.name" :disabled="props.method=='Update'"/>
                             </el-form-item>
                         </el-col>
                         <el-col :span="8" >

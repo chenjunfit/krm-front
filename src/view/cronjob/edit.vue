@@ -1,5 +1,5 @@
 <template>
-    <Add  method="route.query.method" v-if="ready" ResourceType="CronJob" :cron-job-item="cronJobItem"></Add>
+    <Add  :method="route.query.method" v-if="ready" ResourceType="CronJob" :cron-job-item="cronJobItem"></Add>
 </template>
 
 <script setup>

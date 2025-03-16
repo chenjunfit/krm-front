@@ -11,24 +11,28 @@
                 <el-tab-pane label="基本配置" name="basic" style="height: 360px">
                     <el-row :gutter="10">
                         <el-col :span="8">
-                            <el-form-item label="ConfigMap名称" prop="metadata.name" required :rules="rules.name">
-                                <el-input v-model="item.metadata.name"/>
+                            <el-form-item label="ConfigMap名称" prop="metadata.name" required :rules="rules.name" >
+                                <el-input v-model="item.metadata.name" :disabled="props.method=='Update'"/>
                             </el-form-item>
                         </el-col>
                         <el-col :span="8" >
                             <el-form-item label="只读" prop="" >
-                               <el-switch v-model="item.immutable" :disabled="item.immutable&&props.method=='Update'"></el-switch>
+                               <el-switch v-model="item.immutable" :disabled="props.method=='Update'&&item.immutable"></el-switch>
                             </el-form-item>
                         </el-col>
                     </el-row>
                 </el-tab-pane >
                 <el-tab-pane  label="数据配置" name="rule" style="height: 360px">
-                    <Table :list="options.datalList" input-type="textarea" ></Table>
+                    <Table
+                        :list="options.dataList"
+                        inputType="textarea"
+                        :rows="1"
+                    />
                 </el-tab-pane>
                 <el-tab-pane label="注释及标签配置" name="labels" style="height: 360px" >
                     <el-tabs v-model="labelConfig" tab-position="left">
                         <el-tab-pane label="ConfigMap标签配置" name="labels">
-
+                            <Table :list="options.labelList" ></Table>
                         </el-tab-pane>
                         <el-tab-pane label="ConfigMap注释配置" name="annos">
                             <Table :list="options.annotationList"></Table>
@@ -75,6 +79,10 @@ const props=defineProps({
     },
     item:{
         type:Object
+    },
+    ready:{
+        type: Boolean,
+        default: false
     }
 })
 const data=reactive({
@@ -93,10 +101,10 @@ const data=reactive({
         immutable:false
     },
     options:{
+        dataList:[],
         items:[],
-        datalList,
+        labelList:[],
         annotationList:[],
-        podLabelList:[],
 
     },
 })
@@ -112,7 +120,7 @@ const showDialog=ref(false)
 const submitHandler=(tag)=>{
     data.item.metadata.labels=list2object(data.options.labelList)
     data.item.metadata.annotations=list2object(data.options.annotationList)
-    data.item.data=list2object(data.options.datalList)
+    data.item.data=list2object(data.options.dataList)
     if(tag=='yaml'){
         showDialog.value=true
         yamlData=obj2yaml(data.item)
@@ -192,9 +200,9 @@ const open = (msg) => {
 onBeforeMount(()=>{
     if(props.method!='Create'){
         data.item=JSON.parse(JSON.stringify(props.item))
-        data.options.datalList=object2list(data.item.data)
-        data.options.labelList=object2list(props.item.metadata.labels)
-        data.options.annotationList=object2list(props.item.metadata.annotations)
+        data.options.labelList=object2list(data.item.metadata.labels)
+        data.options.annotationList=object2list(data.item.metadata.annotations)
+        data.options.dataList=object2list(data.item.data)
     }
 })
 

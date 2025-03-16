@@ -33,7 +33,7 @@
                                 :name="scope.row.metadata.name"
                                 :name-space="data.nameSpace"
                                 :clusterId="data.clusterId"
-                                ResourceType="Ingress"
+                                ResourceType="ConfigMap"
                                 @deleteCallBack="getList"
                         />
                     </template>

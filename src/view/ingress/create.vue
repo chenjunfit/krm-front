@@ -1,5 +1,5 @@
 <template>
-<AddOrUpdate method="Create" :ready="ready"></AddOrUpdate>
+<AddOrUpdate method="Create" ></AddOrUpdate>
 </template>
 
 <script setup>

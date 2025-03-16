@@ -2,14 +2,14 @@
     <el-tabs >
         <el-tab-pane  >
             <el-table :data="props.list" style=";width: 100%;height: 400px">
-                <el-table-column prop="key" :label="props.keyName" width="400" >
+                <el-table-column prop="key" :label="props.keyName" :width="props.keyWidth" >
                     <template #default="scope">
                         <el-input :readonly="props.readOnly" v-model="scope.row.key"  placeholder="请输入键" />
                     </template>
                 </el-table-column>
-                <el-table-column prop="value" :label="props.valueName" width="200" >
+                <el-table-column prop="value" :label="props.valueName" :width="props.valueWidth" >
                     <template #default="scope">
-                        <el-input :readonly="props.readOnly" :type="props.inputType" v-model:="scope.row.value" placeholder="请输入值"/>
+                        <el-input :readonly="props.readOnly" :rows="props.rows" :type="props.inputType" v-model:="scope.row.value" placeholder="请输入值"/>
                     </template>
                 </el-table-column>
                 <el-table-column fixed="right" width="" >
@@ -49,6 +49,17 @@ const props=defineProps({
     readOnly:{
         type:Boolean,
         default:false
+    },
+    keyWidth:{
+        type:String,
+        default:'240'
+    },
+    valueWidth:{
+        type:String,
+        default:'240'
+    },
+    rows:{
+        type:null,
     }
 })
 const addLabelRow=()=>{

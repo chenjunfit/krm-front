@@ -1,5 +1,5 @@
 <template>
-    <Add  method="route.query.method" :ready="ready" ResourceType="StatefulSet"></Add>
+    <Add  :method="route.query.method" :ready="ready" ResourceType="StatefulSet"></Add>
 </template>
 
 <script setup>
