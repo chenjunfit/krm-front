@@ -17,7 +17,7 @@
                         </el-col>
                         <el-col :span="8" >
                             <el-form-item label="只读" prop="" >
-                               <el-switch v-model="item.immutable" :disabled="props.method=='Update'&&item.immutable"></el-switch>
+                               <el-switch v-model="item.immutable" :disabled="data.options.dataDisabled"></el-switch>
                             </el-form-item>
                         </el-col>
                     </el-row>
@@ -27,6 +27,7 @@
                         :list="options.dataList"
                         inputType="textarea"
                         :rows="1"
+                        :read-only="data.options.dataDisabled"
                     />
                 </el-tab-pane>
                 <el-tab-pane label="注释及标签配置" name="labels" style="height: 360px" >
@@ -105,6 +106,7 @@ const data=reactive({
         items:[],
         labelList:[],
         annotationList:[],
+        dataDisabled:false,
 
     },
 })
@@ -198,12 +200,19 @@ const open = (msg) => {
 }
 
 onBeforeMount(()=>{
+    console.log(data.options.dataDisabled)
+    console.log(props.method,data.item.immutable,data.item)
     if(props.method!='Create'){
         data.item=JSON.parse(JSON.stringify(props.item))
         data.options.labelList=object2list(data.item.metadata.labels)
         data.options.annotationList=object2list(data.item.metadata.annotations)
         data.options.dataList=object2list(data.item.data)
+        if(props.method=='Update'&&data.item.immutable){
+            data.options.dataDisabled=true
+
+        }
     }
+
 })
 
 </script>
