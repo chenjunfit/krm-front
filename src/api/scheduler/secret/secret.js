@@ -7,22 +7,22 @@ export const getSecretList=(data)=>{
     )
 }
 export const getSecret=(data)=>{
-    return request(API_CONFIG.deploymentGetApi,'get',data,
+    return request(API_CONFIG.secretGetApi,'get',data,
         2000
     )
 }
 export const deleteSecret=(data)=>{
-    return request(API_CONFIG.deploymentDeleteApi,'post',data,
+    return request(API_CONFIG.secretDeleteApi,'post',data,
         2000
     )
 }
 export const updateSecret=(data)=>{
-    return request(API_CONFIG.deploymentUpdateApi,'post',data,
+    return request(API_CONFIG.secretUpdateApi,'post',data,
         2000
     )
 }
 export const addSecret=(data)=>{
-    return request(API_CONFIG.deploymentCreateApi,'post',data,
+    return request(API_CONFIG.secretCreateApi,'post',data,
         2000
     )
 }

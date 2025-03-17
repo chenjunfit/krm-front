@@ -38,6 +38,7 @@ const request=(url="",method="get",data={},timeout=5000)=>{
 export default request
 axios.interceptors.request.use(function (config) {
     //在发送前做些什么
+
     // config.headers.Authorization = "yyyyyyyyy"
     //添加时间戳在请求中,解决缓存
     load.value=ElLoading.service({

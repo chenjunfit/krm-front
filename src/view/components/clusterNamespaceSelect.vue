@@ -48,7 +48,10 @@ const namespaceChange=()=>{
     namespaceChangeCallbackHandler()
 }
 const getAlLNamespace=async ()=>{
-    await getNamespaceList(data.clusterId).then((response)=>{
+    const param={
+        clusterId:data.clusterId
+    }
+    await getNamespaceList(param).then((response)=>{
         data.namespaceList=response.data.data.items
     })
     const currentNamespace=route.query.nameSpace
@@ -61,6 +64,7 @@ onBeforeMount(async ()=>{
         const defaultClusterId=data.clusterList[0].id
         const currentClusterId=route.query.clusterId
         data.clusterId=currentClusterId?currentClusterId:defaultClusterId
+
         await clusterChange()
 
 })

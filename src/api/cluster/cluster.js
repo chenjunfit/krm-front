@@ -42,8 +42,8 @@ export const updateNode=(clusterId,name,item)=>{
         2000
     )
 }
-export const getNamespaceList=(clusterId)=>{
-    return request(API_CONFIG.namespaceListApi,'get',{clusterId},
+export const getNamespaceList=(data)=>{
+    return request(API_CONFIG.namespaceListApi,'get',data,
         2000
     )
 }

@@ -169,7 +169,10 @@ const  getAllClusters=async ()=>{
     })
 }
 const getNamespaceListHandler=(clusterId)=>{
-    getNamespaceList(clusterId).then((response)=>{
+    const params={
+        clusterId:clusterId
+    }
+    getNamespaceList(params).then((response)=>{
         data.items=response.data.data.items
         loading.value=false
     })
