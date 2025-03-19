@@ -9,12 +9,12 @@
                     <span>节点列表</span>
                 </div>
                 <div class="card-header">
-                    <el-select v-model="clusterId" placeholder="请选择集群" style="width: 240px" @change="getNodeListHandler(clusterId)">
+                    <el-select v-model="clusterId" placeholder="请选择集群" style="width: 240px" @change="getNodeListHandler">
                         <el-option
                             v-for="item in clusterList"
                             :key="item.id"
-                            :label="item.id"
-                            :value="item.displayName"
+                            :label="item.displayName"
+                            :value="item.id"
                             :disabled="item.status=='InActive'"
                         />
                     </el-select>
@@ -135,19 +135,19 @@ await getClusterList().then((response)=>{
      data.clusterList=response.data.data.items
 })
 }
-const getNodeListHandler=(clusterId)=>{
-    getNodeList(clusterId).then((response)=>{
+const getNodeListHandler=()=>{
+    console.log(data.clusterId)
+    getNodeList(data.clusterId).then((response)=>{
         data.items=response.data.data.items
         loading.value=false
     })
 }
 onBeforeMount(async ()=>{
     await getAllClusters()
-
     const defaultClusterId=data.clusterList[0].id
     const currentClusterId=route.query.id
     data.clusterId=currentClusterId?currentClusterId:defaultClusterId
-    getNodeListHandler(data.clusterId)
+    getNodeListHandler()
 })
 
 const updateNode=(row)=>{
@@ -174,7 +174,7 @@ const closeDialogEmit=()=>{
 }
 
 const filterTableData = computed(() =>
-    data.items.filter(
+    (data.items||[]).filter(
         (item) =>
             !search.value ||
             item.metadata.name.toLowerCase().includes(search.value.toLowerCase())||

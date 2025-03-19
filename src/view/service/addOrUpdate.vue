@@ -280,7 +280,6 @@ const submitHandler=(tag)=>{
     data.item.metadata.annotations=list2object(data.options.annotationList)
     if(data.options.proxyResourceTypeSelected!='ExternalName'){
         data.item.spec.selector=list2object(data.options.podLabelList)
-
     }
 
     if(tag=='yaml'){
@@ -365,7 +364,6 @@ const proxyResrouceChanged=()=>{
 }
 //无头服务switch
 const handleServiceChange=(val)=>{
-    console.log(val)
     if(!val){
         delete data.item.spec.clusterIP
     }

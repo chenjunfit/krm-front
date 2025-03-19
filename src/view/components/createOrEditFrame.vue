@@ -7,8 +7,17 @@
                         <ClusterNamespaceSelect
                             @namespaceChangeCallback="namespaceCallBack"
                             :clusterReadOnly="props.clusterReadOnly"
-                            :ShowNamespace="props.ShowNamespace"
                             :nameSpaceReadOnly="props.nameSpaceReadOnly"
+                            :ShowNamespace="props.ShowNamespace"
+                            v-if="props.ShowNamespace"
+                        >
+                        </ClusterNamespaceSelect>
+                        <ClusterNamespaceSelect
+                            @namespaceChangeCallback="namespaceCallBack"
+                            :clusterReadOnly="props.clusterReadOnly"
+                            :ShowNamespace="props.ShowNamespace"
+                            @clusterChangeCallback="clusterChangedRollback"
+                            v-else="!props.ShowNamespace"
                         >
                         </ClusterNamespaceSelect>
                         <slot name="header"></slot>
@@ -42,9 +51,12 @@ const props=defineProps({
         default: false
     }
 })
-const emtis=defineEmits(['namespaceChangedRollback'])
+const emtis=defineEmits(['namespaceChangedRollback','clusterChangedRollback'])
 const namespaceCallBack=(clusterId,nameSpace)=>{
 emtis('namespaceChangedRollback',clusterId,nameSpace)
+}
+const clusterChangedRollback=(clusterId)=>{
+    emtis('namespaceChangedRollback',clusterId)
 }
 </script>
 

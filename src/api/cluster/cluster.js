@@ -7,13 +7,13 @@ export const getClusterList=()=>{
         2000
     )
 }
-export const getCluster=(id)=>{
-    return request(API_CONFIG.clusterGetApi,'get',{id},
+export const getCluster=(clusterId)=>{
+    return request(API_CONFIG.clusterGetApi,'get',{clusterId},
         2000
     )
 }
-export const deleteCluster=(id)=>{
-    return request(API_CONFIG.clusterDeleteApi,'post',{id},
+export const deleteCluster=(clusterId)=>{
+    return request(API_CONFIG.clusterDeleteApi,'get',{clusterId},
         2000
     )
 }

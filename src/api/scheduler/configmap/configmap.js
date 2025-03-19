@@ -16,12 +16,12 @@ export const deleteConfigMap=(data)=>{
     )
 }
 export const updateConfigMap=(data)=>{
-    return request(API_CONFIG.deploymentUpdateApi,'post',data,
+    return request(API_CONFIG.configMapUpdateApi,'post',data,
         2000
     )
 }
 export const addConfigMap=(data)=>{
-    return request(API_CONFIG.deploymentCreateApi,'post',data,
+    return request(API_CONFIG.configMapCreateApi,'post',data,
         2000
     )
 }

@@ -30,14 +30,14 @@
                 </el-table-column>
                 <el-table-column  prop="" align="center" label="重启次数" width="100">
                     <template #default="scope">
-                        <span v-if="!scope.row.metadata.deleteTimestamp">
+                        <span v-if="!scope.row.metadata.deletionTimestamp">
                             {{getPodRestartCount(scope.row)[0]}}
                         </span>
                     </template>
                 </el-table-column>
                 <el-table-column prop="" align="center" label="容器状态" width="100">
                     <template #default="scope">
-                        <span v-if="!scope.row.metadata.deleteTimestamp">
+                        <span v-if="!scope.row.metadata.deletionTimestamp">
                             {{getPodRestartCount(scope.row)[1]}}
                         </span>
                     </template>
@@ -48,10 +48,10 @@
 
                 <el-table-column fixed="right" align="center" label="操作" width="240">
                     <template #default="scope" >
-                        <el-button v-if="!scope.row.metadata.deleteTimestamp" link type="warning" size="small" @click="deleteItem(scope.row,false)" >删除</el-button>
+                        <el-button v-if="!scope.row.metadata.deletionTimestamp" link type="warning" size="small" @click="deleteItem(scope.row,false)" >删除</el-button>
                         <el-button v-else link type="warning" size="small" @click="deleteItem(scope.row,true)" >强制删除</el-button>
-                        <el-button  v-if="!scope.row.metadata.deleteTimestamp" link type="info"  size="small" @click="deleteNs(scope.row)" >查看日志</el-button>
-                        <el-button  v-if="!scope.row.metadata.deleteTimestamp" link type="info" size="small" @click="deleteNs(scope.row)" >执行命令</el-button>
+                        <el-button  v-if="!scope.row.metadata.deletionTimestamp" link type="info"  size="small" @click="deleteNs(scope.row)" >查看日志</el-button>
+                        <el-button  v-if="!scope.row.metadata.deletionTimestamp" link type="info" size="small" @click="deleteNs(scope.row)" >执行命令</el-button>
                     </template>
                 </el-table-column>
 
@@ -109,7 +109,7 @@ const data=reactive({
 const search = ref('')
 const {clusterId,namespace,items,yamlData}=toRefs(data)
 const filterTableData = computed(() =>
-    data.items.filter(
+    (data.items||[]).filter(
         (item) =>
             !search.value ||
             item.metadata.name.toLowerCase().includes(search.value.toLowerCase())
@@ -125,9 +125,7 @@ getPodList(data.clusterId,data.namespace).then((response)=>{
     data.items=response.data.data.items
 })
 }
-onBeforeMount(()=>{
-   getList()
-})
+
 const getPodRestartCount=computed(()=>(row)=>{
     let restartCount=0
     let readyCount=0

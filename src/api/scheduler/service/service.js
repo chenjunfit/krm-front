@@ -22,7 +22,7 @@ export const updateService=(data)=>{
     )
 }
 export const addService=(data)=>{
-    return request(API_CONFIG.deploymentCreateApi,'post',data,
+    return request(API_CONFIG.serviceCreateApi,'post',data,
         2000
     )
 }

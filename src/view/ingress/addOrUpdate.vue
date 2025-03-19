@@ -80,9 +80,10 @@
                                                         <el-select
                                                             v-model="pathScope.row.backend.service.name"
                                                             placeholder="选择代理服务"
+                                                            @change="()=>{pathScope.row.backend.service.port.number=null}"
                                                         >
                                                             <el-option
-                                                                v-for="s in data.options.items"
+                                                                v-for="s in data.options.serviceSelected"
                                                                 :key="s.metadata.name"
                                                                 :value="s.metadata.name"
                                                                 :label="s.metadata.name"
@@ -202,10 +203,10 @@
                 </el-tab-pane>
                 <el-tab-pane label="注释及标签配置" name="labels" style="height: 360px" >
                     <el-tabs v-model="labelConfig" tab-position="left">
-                        <el-tab-pane label="Service标签配置" name="labels">
+                        <el-tab-pane label="Ingress标签配置" name="labels">
                             <Table :list="options.labelList"></Table>
                         </el-tab-pane>
-                        <el-tab-pane label="Service注释配置" name="annos">
+                        <el-tab-pane label="Ingress注释配置" name="annos">
                             <Table :list="options.annotationList"></Table>
                         </el-tab-pane>
                     </el-tabs>

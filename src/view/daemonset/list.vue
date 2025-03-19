@@ -29,7 +29,7 @@
                 <el-table-column fixed="right" align="center" label="操作" width="240">
                     <template #default="scope" >
                         <GenericOptions
-                            v-if="!scope.row.metadata.deleteTimestamp"
+                            v-if="!scope.row.metadata.deletionTimestamp"
                             :name="scope.row.metadata.name"
                             :clusterId="data.clusterId"
                             ResourceType="DaemonSet"
@@ -81,7 +81,7 @@ const data=reactive({
 const search = ref('')
 const {clusterId,namespace,items,yamlData}=toRefs(data)
 const filterTableData = computed(() =>
-    data.items.filter(
+    (data.items||[]).filter(
         (item) =>
             !search.value ||
             item.metadata.name.toLowerCase().includes(search.value.toLowerCase())

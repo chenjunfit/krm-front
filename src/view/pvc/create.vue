@@ -1,5 +1,5 @@
 <template>
-<AddOrUpdate method="Create" v-if="ready" ></AddOrUpdate>
+<AddOrUpdate method="Create" ></AddOrUpdate>
 </template>
 
 <script setup>

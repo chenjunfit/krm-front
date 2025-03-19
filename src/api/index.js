@@ -80,7 +80,7 @@ axios.interceptors.response.use(function (response) {
         return Promise.resolve(response)
     }else if(response.data.status==401){
         ElMessage({
-            message: '用户或者密码错误',
+            message: '登录信息不正确',
             type: 'warning',
         })
         window.localStorage.removeItem(TOKEN_CONFIG.TOKEN_NAME)

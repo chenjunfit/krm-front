@@ -55,6 +55,7 @@ import {obj2yaml} from '../../utils/index.js'
 import {computed, onBeforeMount, ref, toRefs} from "vue";
 import StringOrNumber from "../components/stringOrNumber.vue";
 import {addStatefulset, updateStatefulset} from "../../api/scheduler/statefulset/statefulset.js";
+import router from "../../routers/index.js";
 const useItemer=useItem()
 const {item}=toRefs(useItem())
 const showDialog=ref(false)
@@ -100,10 +101,25 @@ const submit=(tag,autoCreateService)=>{
     }else{
         if(props.method!='Update'){
             addStatefulset(formData).then((response)=>{
-                ElMessage({
-                    message:response.data.message,
-                    type:"success"
-                })
+                if(response.data.status==200){
+                    ElMessage({
+                        message:response.data.message,
+                        type:"success"
+                    })
+                    router.push({
+                        path:'/statefulset/list',
+                        query:{
+                            clusterId: useItemer.item.clusterId,
+                            nameSpace:useItemer.item.nameSpace,
+                            method:'GET'
+                        }
+                    })
+                }else{
+                    ElMessage({
+                        message:response.data.message,
+                        type:"error"
+                    })
+                }
 
             })
 

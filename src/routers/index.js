@@ -16,6 +16,8 @@ import {
 } from "./scheduler/scheduler.js";
 import {ingressRouters, serviceRouters} from "./service/service.js";
 import {configmapRouters, secretRouters} from "./config/config.js";
+import {pvcRouters, pvRouters} from "./storage/storage.js";
+import {toolsRouters} from "./tools/tools.js";
 //定义路由映射
 const routers=[
     clusterRouters,
@@ -30,6 +32,9 @@ const routers=[
     ingressRouters,
     configmapRouters,
     secretRouters,
+    pvRouters,
+    pvcRouters,
+    toolsRouters,
     {
         path: '/login',
         component: Login,

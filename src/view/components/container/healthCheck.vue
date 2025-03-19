@@ -28,16 +28,18 @@ const props=defineProps({
     }
 })
 onBeforeMount(()=>{
+    if(props.method!='Create'){
+        if(!props.container.hasOwnProperty('startupProbe')){
+            props.container['startupProbe']={}
+        }
+        if(!props.container.hasOwnProperty('livenessProbe')){
+            props.container['livenessProbe']={}
+        }
+        if(!props.container.hasOwnProperty('readinessProbe')){
+            props.container['readinessProbe']={}
+        }
+    }
 
-    if(!props.container.hasOwnProperty('startupProbe')){
-        props.container['startupProbe']={}
-    }
-    if(!props.container.hasOwnProperty('livenessProbe')){
-        props.container['livenessProbe']={}
-    }
-    if(!props.container.hasOwnProperty('readinessProbe')){
-        props.container['readinessProbe']={}
-    }
 
 })
 </script>

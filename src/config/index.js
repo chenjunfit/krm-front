@@ -68,13 +68,25 @@ export const API_CONFIG={
     ingressUpdateApi:`${BASE_URL}/ingress/update`,
     ingressDeleteApi:`${BASE_URL}/ingress/delete`,
     //pvc
-    pvcListApi:`${BASE_URL}/pvc/list`,
+    pvcListApi:`${BASE_URL}/persistentvolumeclaim/list`,
+    pvcGetApi:`${BASE_URL}/persistentvolumeclaim/get`,
+    pvcCreateApi:`${BASE_URL}/persistentvolumeclaim/add`,
+    pvcUpdateApi:`${BASE_URL}/persistentvolumeclaim/update`,
+    pvcDeleteApi:`${BASE_URL}/persistentvolumeclaim/delete`,
+    //pv
+    pvListApi:`${BASE_URL}/persistentvolume/list`,
+    pvGetApi:`${BASE_URL}/persistentvolume/get`,
+    pvCreateApi:`${BASE_URL}/persistentvolume/add`,
+    pvUpdateApi:`${BASE_URL}/persistentvolume/update`,
+    pvDeleteApi:`${BASE_URL}/persistentvolume/delete`,
     //configmap
     configMapListApi:`${BASE_URL}/configmap/list`,
     configMapGetApi:`${BASE_URL}/configmap/get`,
     configMapCreateApi:`${BASE_URL}/configmap/add`,
     configMapUpdateApi:`${BASE_URL}/configmap/update`,
     configMapDeleteApi:`${BASE_URL}/configmap/delete`,
+    //tools
+    yamlCreateOrUpdate:`${BASE_URL}/yaml/create`,
 }
 export const TOKEN_CONFIG={
     "TOKEN_NAME":"Authorization"

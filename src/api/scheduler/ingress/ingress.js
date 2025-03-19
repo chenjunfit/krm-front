@@ -27,7 +27,7 @@ export const updateIngress=(data)=>{
     )
 }
 export const addIngress=(data)=>{
-    return request(API_CONFIG.deploymentCreateApi,'post',data,
+    return request(API_CONFIG.ingressCreateApi,'post',data,
         2000
     )
 }

@@ -78,22 +78,37 @@ const onSubmit = () => {
         if(valid){
             if(props.method=="create"){
                 loading.value=true
-                addCluster(formData).then((response)=>{
-                    ElMessage({
-                        message:response.data.message,
-                        type:"success"
-                    })
+                addCluster(formData.value).then((response)=>{
+                    if(response.data.status==200){
+                        ElMessage({
+                            message:response.data.message,
+                            type:"success"
+                        })
+                    }else{
+                        ElMessage({
+                            message:response.data.message,
+                            type:"error"
+                        })
+                    }
+
                     emits("callback")
-                    emits("closeDialogEmit")
+                    // emits("closeDialogEmit")
                     loading.value=false
                 })
             }else{
                 loading.value=true
-                updateCluster(formData).then((response)=>{
-                    ElMessage({
-                        message:response.data.message,
-                        type:"success"
-                    })
+                updateCluster(formData.value).then((response)=>{
+                    if(response.data.status==200){
+                        ElMessage({
+                            message:response.data.message,
+                            type:"success"
+                        })
+                    }else{
+                        ElMessage({
+                            message:response.data.message,
+                            type:"error"
+                        })
+                    }
                     emits("callback")
                     emits("closeDialogEmit")
                     loading.value=false

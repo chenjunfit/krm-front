@@ -11,8 +11,8 @@ export const getStatefulset=(data)=>{
         2000
     )
 }
-export const deleteStatefulset=(id)=>{
-    return request(API_CONFIG.statefulsetDeleteApi,'post',{id},
+export const deleteStatefulset=(data)=>{
+    return request(API_CONFIG.statefulsetDeleteApi,'post',data,
         2000
     )
 }

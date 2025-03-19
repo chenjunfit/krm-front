@@ -39,9 +39,10 @@
                 <el-table-column fixed="right" align="center" label="操作" width="240">
                     <template #default="scope" >
                         <GenericOptions
-                                v-if="!scope.row.metadata.deleteTimestamp"
+                                v-if="!scope.row.metadata.deletionTimestamp"
                                 :name="scope.row.metadata.name"
                                 :clusterId="data.clusterId"
+                                :name-space="data.nameSpace"
                                 ResourceType="Deployment"
                                 @deleteCallBack="deleteCallBack"
                         />
@@ -92,7 +93,7 @@ const data=reactive({
 const search = ref('')
 const {clusterId,namespace,items,yamlData}=toRefs(data)
 const filterTableData = computed(() =>
-    data.items.filter(
+    (data.items||[]).filter(
         (item) =>
             !search.value ||
             item.metadata.name.toLowerCase().includes(search.value.toLowerCase())
@@ -111,10 +112,6 @@ const getList=()=>{
         data.items=response.data.data.items
     })
 }
-onBeforeMount(()=>{
-    getList()
-
-})
 const deleteItem=(row,force)=>{
     deleteDeployment(data.clusterId,data.nameSpace,row.metadata.name,force).then((res)=>{
         ElMessageBox.confirm(

@@ -178,4 +178,53 @@ export const MEMU_CONFIG=[
             }
         ]
     },
+    {
+        "title":"存储管理",
+        "index":"/storage",
+        "icon":"iconfont icon-32cunchuguanli",
+        subMenu:[
+            {
+                "title":"PV",
+                "index":"/pv",
+                "icon":"iconfont icon-a-cunchujuanpv",
+                items:[
+
+                    {
+                        "title":"查看",
+                        "index":"/pv/list"
+                    },
+                    {
+                        "title":"创建",
+                        "index":"/pv/add"
+                    },
+                ]
+            },
+            {
+                "title":"PVC",
+                "index":"/pvc",
+                "icon":"iconfont icon-a-cunchujuanshengmingpvc",
+                items:[
+                    {
+                        "title":"创建",
+                        "index":"/pvc/add"
+                    },
+                    {
+                        "title":"查看",
+                        "index":"/pvc/list"
+                    },
+                ]
+            }
+        ]
+    },
+    {
+        "title":"实用工具",
+        "index":"/tools",
+        "icon":"iconfont icon-shiyonggongju",
+        items:
+            [
+                {"title":"通过yaml创建或更新", "index":"/tools/add"},
+            ],
+
+
+    },
 ]

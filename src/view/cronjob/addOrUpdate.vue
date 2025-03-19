@@ -85,6 +85,8 @@ import DialogYaml from "../components/dialogYaml/dialogYaml.vue";
 import {obj2yaml} from '../../utils/index.js'
 import {computed, onBeforeMount, onMounted, reactive, ref, toRefs} from "vue";
 import StringOrNumber from "../components/stringOrNumber.vue";
+import {addCronJob, updateCronJob} from "../../api/scheduler/cronjob/cronjob.js";
+import router from "../../routers/index.js";
 const useItemer=useItem()
 const {item}=toRefs(useItem())
 const showDialog=ref(false)
@@ -143,16 +145,30 @@ const submit=(tag,autoCreateService)=>{
         yamlData=obj2yaml(data.cronJobItem)
     }else{
         if(props.method!='Update'){
-            addDaemonset(formData).then((response)=>{
-                ElMessage({
-                    message:response.data.message,
-                    type:"success"
-                })
-
+            addCronJob(formData).then((response)=>{
+                if(response.data.status==200){
+                    ElMessage({
+                        message:response.data.message,
+                        type:"success"
+                    })
+                    router.replace({
+                        path:'/cronjob/list',
+                        query:{
+                            clusterId: useItemer.item.clusterId,
+                            nameSpace:useItemer.item.nameSpace,
+                            method:'GET'
+                        }
+                    })
+                }else{
+                    ElMessage({
+                        message:response.data.message,
+                        type:"error"
+                    })
+                }
             })
 
         }else{
-            updateDaemonset(formData).then((response)=>{
+            updateCronJob(formData).then((response)=>{
                 ElMessage({
                     message:response.data.message,
                     type:"success"

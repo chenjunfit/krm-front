@@ -72,6 +72,7 @@ import {useRouter} from "vue-router";
 import { ElMessage, ElMessageBox } from 'element-plus'
 import {getServiceList} from "../../api/scheduler/service/service.js";
 import {getSecretList} from "../../api/scheduler/secret/secret.js";
+import {addConfigMap, updateConfigMap} from "../../api/scheduler/configmap/configmap.js";
 const route=useRouter()
 const props=defineProps({
     method:{
@@ -133,12 +134,12 @@ const submitHandler=(tag)=>{
             item: data.item
         }
         if(props.method!='Update'){
-            addIngress(formData).then((response)=>{
+            addConfigMap(formData).then((response)=>{
                 open(response.data.message)
             })
 
         }else{
-            updateIngress(formData).then((response)=>{
+            updateConfigMap(formData).then((response)=>{
                 ElMessage({
                     message:response.data.message,
                     type:"success"

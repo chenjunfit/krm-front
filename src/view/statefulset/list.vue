@@ -39,9 +39,10 @@
                 <el-table-column fixed="right" align="center" label="操作" width="240">
                     <template #default="scope" >
                         <GenericOptions
-                            v-if="!scope.row.metadata.deleteTimestamp"
+                            v-if="!scope.row.metadata.deletionTimestamp"
                             :name="scope.row.metadata.name"
                             :clusterId="data.clusterId"
+                            :name-space="data.nameSpace"
                             ResourceType="StatefulSet"
                             @deleteCallBack="deleteCallBack"
                         />
@@ -92,7 +93,7 @@ const data=reactive({
 const search = ref('')
 const {clusterId,namespace,items,yamlData}=toRefs(data)
 const filterTableData = computed(() =>
-    data.items.filter(
+    (data.items||[]).filter(
         (item) =>
             !search.value ||
             item.metadata.name.toLowerCase().includes(search.value.toLowerCase())
@@ -111,29 +112,31 @@ const getList=()=>{
         data.items=response.data.data.items
     })
 }
-onBeforeMount(()=>{
-    getList()
-
-})
-const deleteItem=(row,force)=>{
-    deleteStatefulset(data.clusterId,data.nameSpace,row.metadata.name,force).then((res)=>{
-        ElMessageBox.confirm(
-            '是否删除StatefulSet: '+row.metadata.name,
-            'Warning',
-            {
-                confirmButtonText: 'OK',
-                cancelButtonText: 'Cancel',
-                type: 'warning',
-            }
-        ).then(() => {
-            ElMessage({
-                message:res.data.message,
-                type:"success"
-            })
-            getList()
-        })
-    })
-}
+// const deleteItem=(row,force)=>{
+//     const params={
+//         clusterId: data.clusterId,
+//         nameSpace:data.nameSpace,
+//         name:row.metadata.name,
+//         forceDelete:force,
+//     }
+//     deleteStatefulset(params).then((res)=>{
+//         ElMessageBox.confirm(
+//             '是否删除StatefulSet: '+row.metadata.name,
+//             'Warning',
+//             {
+//                 confirmButtonText: 'OK',
+//                 cancelButtonText: 'Cancel',
+//                 type: 'warning',
+//             }
+//         ).then(() => {
+//             ElMessage({
+//                 message:res.data.message,
+//                 type:"success"
+//             })
+//             getList()
+//         })
+//     })
+// }
 const detailNode=(row)=>{
     detailDialog.value=true
     const item=JSON.parse(JSON.stringify(row))

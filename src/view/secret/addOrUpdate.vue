@@ -89,7 +89,7 @@ import {addIngress,  getIngressClassList, updateIngress} from "../../api/schedul
 import {useRouter} from "vue-router";
 import { ElMessage, ElMessageBox } from 'element-plus'
 import {getServiceList} from "../../api/scheduler/service/service.js";
-import {getSecretList} from "../../api/scheduler/secret/secret.js";
+import {addSecret, getSecretList, updateSecret} from "../../api/scheduler/secret/secret.js";
 const route=useRouter()
 const props=defineProps({
     method:{
@@ -193,7 +193,7 @@ const submitHandler=(tag)=>{
     if(data.item.type=='kubernetes.io/dockerconfigjson'){
         const user_pass=`${tableData.username}:${tableData.password}`
         const auth=btoa(user_pass.trim())
-
+        //修改的时候不会修改原先的，而是新增一个
         const registryConfig={
             username:tableData.username,
             address:tableData.address,
@@ -299,7 +299,6 @@ onBeforeMount(()=>{
             data.dockerCfg=dockerCfgObj
             const address=Object.keys(data.dockerCfg.auths)[0]
             const auth=data.dockerCfg.auths[address]
-            console.log(auth)
             const registryConfig={
                 username:auth.username,
                 address:address,

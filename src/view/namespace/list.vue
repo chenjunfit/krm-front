@@ -13,8 +13,8 @@
                         <el-option
                             v-for="item in clusterList"
                             :key="item.id"
-                            :label="item.id"
-                            :value="item.displayName"
+                            :label="item.displayName"
+                            :value="item.id"
                             :disabled="item.status=='InActive'"
                         />
                     </el-select>
@@ -45,9 +45,9 @@
                 </el-table-column>
                 <el-table-column fixed="right" align="center" label="操作" >
                     <template #default="scope" >
-                        <el-button link type="primary" size="small" @click="deleteNs(scope.row)" >资源复制</el-button>
-                        <el-button link type="primary" size="small" @click="updateNamespace(scope.row)" :disabled="scope.row.status=='Active'">编辑</el-button>
-                        <el-button link type="primary" size="small" @click="deleteNs(scope.row)" >删除</el-button>
+                        <el-button :disabled="scope.row.metadata.deletionTimestamp" link type="primary" size="small" @click="deleteNs(scope.row)" >资源复制</el-button>
+                        <el-button :disabled="scope.row.metadata.deletionTimestamp" link type="primary" size="small" @click="updateNamespace(scope.row)" >编辑</el-button>
+                        <el-button :disabled="scope.row.metadata.deletionTimestamp" link type="primary" size="small" @click="deleteNs(scope.row)" >删除</el-button>
 
 
                     </template>
@@ -168,9 +168,9 @@ const  getAllClusters=async ()=>{
         data.clusterList=response.data.data.items
     })
 }
-const getNamespaceListHandler=(clusterId)=>{
+const getNamespaceListHandler=()=>{
     const params={
-        clusterId:clusterId
+        clusterId:data.clusterId
     }
     getNamespaceList(params).then((response)=>{
         data.items=response.data.data.items
@@ -206,11 +206,19 @@ const createNamespace=()=>{
 }
 const submitCreateNamespace=()=>{
 
-    addNamespace(data.clusterId,data.deleteName).then((response)=>{
-    ElMessage({
-        message:response.data.message,
-        type:"success"
-        })
+    addNamespace(data.clusterId,data.createName).then((response)=>{
+        if(response.data.status==200){
+            ElMessage({
+                message:response.data.message,
+                type:"success"
+            })
+            getNamespaceListHandler()
+        }else{
+            ElMessage({
+                message:response.data.message,
+                type:"error"
+            })
+        }
     })
     createDialog.value=false
     createName.value=""
@@ -229,10 +237,18 @@ const submitDeleteNamespace=(clusterId,name)=>{
         return
     }
     deleteNamespace(clusterId,name).then((response)=>{
-        ElMessage({
-            message:response.data.message,
-            type:"success"
-        })
+        if(response.data.status==200){
+            ElMessage({
+                message:response.data.message,
+                type:"success"
+            })
+            getNamespaceListHandler()
+        }else{
+            ElMessage({
+                message:response.data.message,
+                type:"error"
+            })
+        }
     })
     deleteDialog.value=false
     deleteName.value=""
@@ -247,7 +263,7 @@ const closeDialogEmit=()=>{
 }
 
 const filterTableData = computed(() =>
-    data.items.filter(
+    (data.items||[]).filter(
         (item) =>
             !search.value ||
             item.metadata.name.toLowerCase().includes(search.value.toLowerCase())

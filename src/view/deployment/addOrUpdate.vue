@@ -54,6 +54,7 @@ import DialogYaml from "../components/dialogYaml/dialogYaml.vue";
 import {obj2yaml} from '../../utils/index.js'
 import {computed, onBeforeMount, ref, toRefs} from "vue";
 import StringOrNumber from "../components/stringOrNumber.vue";
+import router from "../../routers/index.js";
 const useItemer=useItem()
 const showDialog=ref(false)
 const {item}=toRefs(useItem())
@@ -92,23 +93,44 @@ const submit=(tag,autoCreateService)=>{
     }else{
         if(props.method!='Update'){
             addDeployment(formData).then((response)=>{
-                ElMessage({
-                    message:response.data.message,
-                    type:"success"
-                })
+                if(response.data.status==200){
+                    ElMessage({
+                        message:response.data.message,
+                        type:"success"
+                    })
+                    router.push({
+                        path:'/deployment/list',
+                        query:{
+                            clusterId: useItemer.item.clusterId,
+                            nameSpace:useItemer.item.nameSpace,
+                            method:'GET'
+                        }
+                    })
+                }else{
+                    ElMessage({
+                        message:response.data.message,
+                        type:"error"
+                    })
+                }
 
             })
 
         }else{
             updateDeployment(formData).then((response)=>{
-                ElMessage({
-                    message:response.data.message,
-                    type:"success"
-                })
+                if(response.data.status==200){
+                    ElMessage({
+                        message:response.data.message,
+                        type:"success"
+                    })
+                }else{
+                    ElMessage({
+                        message:response.data.message,
+                        type:"error"
+                    })
+                }
             })
         }
     }
-    // console.log(formData)
 
 }
 const changeStrategy=(val)=>{

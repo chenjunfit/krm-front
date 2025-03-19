@@ -21,7 +21,7 @@
                     </template>
                 </el-table-column>
                 <el-table-column prop="displayName" align="center" label="集群别名" width="150" />
-                <el-table-column prop="version" sortable align="center" label="版本" width="80" />
+                <el-table-column prop="clusterVersion" sortable align="center" label="版本" width="80" />
                 <el-table-column prop="state" align="center" label="位置" width="180" >
                     <template #default="scope">
                         {{scope.row.city}}-{{scope.row.district}}
@@ -116,7 +116,7 @@ const handleDelete=(scope)=>{
                 message:"删除集群成功",
                 type:"success"
             })
-            getClusterList()
+            getClusterListHandler()
             loading.value=false
 
         })
@@ -132,6 +132,7 @@ const addCluster=()=>{
 const updateCluster=(row)=>{
     defaultMethod.value="update"
     getCluster(row.id).then((response)=>{
+        console.log(response)
         data.ClusterForm=response.data.data.item
         dialogVisible.value=true
     })

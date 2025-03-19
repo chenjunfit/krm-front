@@ -48,13 +48,20 @@ const deleteItem=()=>{
     })
 }
 const editItem=(arg)=>{
+
         const resourceType=props.ResourceType.toLowerCase()
+        let path=`/${resourceType}/edit`
+        if(resourceType=='persistentvolume'){
+                path='/pv/edit'
+        }else if(resourceType=='persistentvolumeclaim'){
+                path='/pvc/edit'
+        }
         router.push({
-                path:`/${resourceType}/edit`,
+                path:path,
                 query:{
                         clusterId: props.clusterId,
                         nameSpace:props.nameSpace,
-                        item: props.name,
+                        name: props.name,
                         method:arg
                 }
         })
