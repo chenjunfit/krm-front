@@ -35,7 +35,11 @@
                     </template>
                 </el-table-column>
                 <el-table-column prop="status.addresses[0].address" align="center" label="IP" width="150" />
-                <el-table-column prop="metadata.name" sortable align="center" label="角色" width="80" />
+                <el-table-column prop="role" sortable align="center" label="角色" width="80" >
+                    <template #default="scope">
+                        {{getRole(scope.row)}}
+                    </template>
+                </el-table-column>
                 <el-table-column prop="metadata.name" align="center" label="节点状态" width="180" >
                 </el-table-column>
                 <el-table-column prop="" align="center" label="状态" width="80" >
@@ -136,11 +140,21 @@ await getClusterList().then((response)=>{
 })
 }
 const getNodeListHandler=()=>{
-    console.log(data.clusterId)
+
     getNodeList(data.clusterId).then((response)=>{
         data.items=response.data.data.items
         loading.value=false
     })
+    console.log(data.items)
+
+}
+const getRole=(item)=>{
+    const keys=Object.keys(item.metadata.labels)
+    if(keys.indexOf("node-role.kubernetes.io/control-plane")==-1){
+        return "worker"
+    }else{
+        return "Master"
+    }
 }
 onBeforeMount(async ()=>{
     await getAllClusters()
