@@ -49,15 +49,17 @@
 import SchedulerFrame from "../components/schedulerFrame.vue";
 import {useItem} from "../../store/index.js";
 import {addDeployment ,updateDeployment} from '../../api/scheduler/deployment/deployment.js'
-import {ElMessage} from "element-plus";
+import {ElMessage, ElMessageBox} from "element-plus";
 import DialogYaml from "../components/dialogYaml/dialogYaml.vue";
 import {obj2yaml} from '../../utils/index.js'
 import {computed, onBeforeMount, ref, toRefs} from "vue";
 import StringOrNumber from "../components/stringOrNumber.vue";
 import router from "../../routers/index.js";
+import {useRouter} from "vue-router";
 const useItemer=useItem()
 const showDialog=ref(false)
 const {item}=toRefs(useItem())
+const route=useRouter()
 const props=defineProps({
     method:{
         type:String,
@@ -74,7 +76,17 @@ const submit=(tag,autoCreateService)=>{
 
     useItemer.item['apiVersion']='apps/v1'
     useItemer.item['kind']='deployment'
-
+    useItemer.item.spec.template.spec.containers.forEach((item)=>{
+        if (item.livenessProbe== null || item.livenessProbe == undefined || (Object.keys(item.livenessProbe).length == 0) ) {
+            delete item.livenessProbe
+        }
+        if (item.startupProbe== null || item.startupProbe == undefined || (Object.keys(item.startupProbe).length == 0) ) {
+            delete item.startupProbe
+        }
+        if (item.readinessProbe== null || item.readinessProbe == undefined || (Object.keys(item.readinessProbe).length == 0) ) {
+            delete item.readinessProbe
+        }
+    })
     const itemTemp={
         "apiVersion":"apps/v1",
         "kind":"Deployment",
@@ -87,47 +99,20 @@ const submit=(tag,autoCreateService)=>{
         item:useItemer.item,
         autoCreateService
     }
+
     if(tag=='yaml'){
         showDialog.value=true
+        delete itemTemp.metadata.managedFields
         yamlData=obj2yaml(itemTemp)
     }else{
         if(props.method!='Update'){
             addDeployment(formData).then((response)=>{
-                if(response.data.status==200){
-                    ElMessage({
-                        message:response.data.message,
-                        type:"success"
-                    })
-                    router.push({
-                        path:'/deployment/list',
-                        query:{
-                            clusterId: useItemer.item.clusterId,
-                            nameSpace:useItemer.item.nameSpace,
-                            method:'GET'
-                        }
-                    })
-                }else{
-                    ElMessage({
-                        message:response.data.message,
-                        type:"error"
-                    })
-                }
-
+                open(response.data.message)
             })
 
         }else{
             updateDeployment(formData).then((response)=>{
-                if(response.data.status==200){
-                    ElMessage({
-                        message:response.data.message,
-                        type:"success"
-                    })
-                }else{
-                    ElMessage({
-                        message:response.data.message,
-                        type:"error"
-                    })
-                }
+                open(response.data.message)
             })
         }
     }
@@ -156,7 +141,7 @@ const StrategyType=[
 onBeforeMount(()=>{
 
     if(props.method=='Create'){
-        useItem().item .spec.strategy={
+        useItem().item.spec.strategy={
             type:"RollingUpdate",
                 rollingUpdate:{
                 maxUnavailable:'25%',
@@ -165,6 +150,27 @@ onBeforeMount(()=>{
         }
     }
 })
+const open = (msg) => {
+    ElMessageBox.confirm(
+        msg,
+        {
+            confirmButtonText: '查看列表',
+            cancelButtonText: '返回',
+            type: 'success',
+
+        }
+    ).then(() => {
+            route.replace({
+                path:'/deployment/list',
+                query:{
+                    clusterId:useItemer.item.clusterId,
+                    nameSpace:useItemer.item.nameSpace
+                }
+            })
+        }).catch(() => {
+            return
+        })
+}
 </script>
 <style scoped>
 

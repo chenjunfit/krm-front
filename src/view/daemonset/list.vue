@@ -32,6 +32,7 @@
                             v-if="!scope.row.metadata.deletionTimestamp"
                             :name="scope.row.metadata.name"
                             :clusterId="data.clusterId"
+                            :name-space="data.nameSpace"
                             ResourceType="DaemonSet"
                             @deleteCallBack="getList"
                         />
@@ -87,43 +88,14 @@ const filterTableData = computed(() =>
             item.metadata.name.toLowerCase().includes(search.value.toLowerCase())
     )
 )
-const nsCallBack=(clusterId,nameSpace)=>{
+const nsCallBack=async (clusterId,nameSpace)=>{
     data.clusterId=clusterId
     data.nameSpace=nameSpace
-    getList()
+    await getList()
 }
-const getList=()=>{
-    getDaemonsetList(data.clusterId,data.nameSpace).then((response)=>{
+const getList= async ()=>{
+    await getDaemonsetList(data.clusterId,data.nameSpace).then((response)=>{
         data.items=response.data.data.items
-    })
-}
-onBeforeMount(()=>{
-    getList()
-
-})
-const deleteItem=(row,force)=>{
-    const param={
-        clusterId: data.clusterId,
-        nameSpace:data.nameSpace,
-        name: row.metadata.name,
-        forceDelete: force
-    }
-    deleteDaemonset(data).then((res)=>{
-        ElMessageBox.confirm(
-            '是否删除DaemonSet: '+row.metadata.name,
-            'Warning',
-            {
-                confirmButtonText: 'OK',
-                cancelButtonText: 'Cancel',
-                type: 'warning',
-            }
-        ).then(() => {
-            ElMessage({
-                message:res.data.message,
-                type:"success"
-            })
-            getList()
-        })
     })
 }
 const detailNode=(row)=>{

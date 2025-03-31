@@ -248,7 +248,6 @@ const submitHandler=(tag)=>{
             item: data.item
         }
         if(props.method!='Update'){
-            console.log(formData)
             addPv(formData).then((response)=>{
                 open(response.data.message)
             })

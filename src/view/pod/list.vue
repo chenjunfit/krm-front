@@ -24,7 +24,7 @@
                 <el-table-column  prop="metadata.namespace" align="center" label="命名空间" width="120"/>
                 <el-table-column prop="" align="center" label="状态" >
                     <template #default="scope">
-                        <el-icon v-if="scope.row.status.phase=='Running'" color="green">{{scope.row.status.phase}}</el-icon>
+                        <el-icon v-if="scope.row.status.phase=='Running'||scope.row.status.phase=='Succeeded'" color="green">{{scope.row.status.phase}}</el-icon>
                         <el-icon v-else color="red">{{scope.row.status.phase}}</el-icon>
                     </template>
                 </el-table-column>

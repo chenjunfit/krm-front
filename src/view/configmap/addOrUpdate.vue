@@ -201,8 +201,6 @@ const open = (msg) => {
 }
 
 onBeforeMount(()=>{
-    console.log(data.options.dataDisabled)
-    console.log(props.method,data.item.immutable,data.item)
     if(props.method!='Create'){
         data.item=JSON.parse(JSON.stringify(props.item))
         data.options.labelList=object2list(data.item.metadata.labels)

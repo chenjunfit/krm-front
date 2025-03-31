@@ -132,7 +132,6 @@ const addCluster=()=>{
 const updateCluster=(row)=>{
     defaultMethod.value="update"
     getCluster(row.id).then((response)=>{
-        console.log(response)
         data.ClusterForm=response.data.data.item
         dialogVisible.value=true
     })

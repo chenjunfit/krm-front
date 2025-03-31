@@ -40,8 +40,6 @@
                         {{getRole(scope.row)}}
                     </template>
                 </el-table-column>
-                <el-table-column prop="metadata.name" align="center" label="节点状态" width="180" >
-                </el-table-column>
                 <el-table-column prop="" align="center" label="状态" width="80" >
                     <template #default="scope">
                         <el-icon v-if="scope.row.status.conditions[scope.row.status.conditions.length-1].status=='True'" color="green">Ready</el-icon>
@@ -50,12 +48,23 @@
                 </el-table-column>
                 <el-table-column prop="" align="center"  label="禁止调度" width="120" >
                     <template #default="scope">
-                        <el-switch v-model="value1"/>
+                        <TaintOptions
+                            :item="scope.row"
+                            taint-type="NoSchedule"
+                            :cluster-id="data.clusterId"
+                        >
+
+                        </TaintOptions>
                     </template>
                 </el-table-column>
                 <el-table-column prop="" align="center" label="驱逐" width="120" >
                     <template #default="scope">
-                        <el-switch v-model="value1"/>
+                        <TaintOptions
+                            :item="scope.row"
+                            taint-type="NoExecute"
+                            :cluster-id="data.clusterId"
+                        >
+                        </TaintOptions>
                     </template>
                 </el-table-column>
                 <el-table-column fixed="right" align="center" label="操作" min-width="100">
@@ -86,7 +95,6 @@
                 >
 
                 </Edit>
-
             </el-dialog>
             <el-dialog
                 v-model="detailDialog"
@@ -118,6 +126,7 @@ import Edit from "./edit.vue";
 import node from "../../routers/cluster/node.js";
 import Detail from "./detail.vue";
 import ClusterNamespaceSelect from "../components/clusterNamespaceSelect.vue";
+import TaintOptions from "./components/taintOptions.vue";
 const loading=ref(true)
 const nodeDialog=ref(false)
 const detailDialog=ref(false)
@@ -145,7 +154,6 @@ const getNodeListHandler=()=>{
         data.items=response.data.data.items
         loading.value=false
     })
-    console.log(data.items)
 
 }
 const getRole=(item)=>{
@@ -162,6 +170,7 @@ onBeforeMount(async ()=>{
     const currentClusterId=route.query.id
     data.clusterId=currentClusterId?currentClusterId:defaultClusterId
     getNodeListHandler()
+
 })
 
 const updateNode=(row)=>{

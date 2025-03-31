@@ -45,9 +45,9 @@
                 </el-table-column>
                 <el-table-column fixed="right" align="center" label="操作" >
                     <template #default="scope" >
-                        <el-button :disabled="scope.row.metadata.deletionTimestamp" link type="primary" size="small" @click="deleteNs(scope.row)" >资源复制</el-button>
-                        <el-button :disabled="scope.row.metadata.deletionTimestamp" link type="primary" size="small" @click="updateNamespace(scope.row)" >编辑</el-button>
-                        <el-button :disabled="scope.row.metadata.deletionTimestamp" link type="primary" size="small" @click="deleteNs(scope.row)" >删除</el-button>
+                        <el-button :disabled="scope.row.metadata.deletionTimestamp!=null" link type="primary" size="small" @click="deleteNs(scope.row)" >资源复制</el-button>
+                        <el-button :disabled="scope.row.metadata.deletionTimestamp!=null" link type="primary" size="small" @click="updateNamespace(scope.row)" >编辑</el-button>
+                        <el-button :disabled="scope.row.metadata.deletionTimestamp!=null" link type="primary" size="small" @click="deleteNs(scope.row)" >删除</el-button>
 
 
                     </template>

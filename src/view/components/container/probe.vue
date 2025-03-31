@@ -7,6 +7,7 @@
                       v-model="options.probeHandler"
                       style="width: 20%;"
                       @change="changeProbe"
+                      placeholder="请选择探针类型"
 
               >
                     <el-option
@@ -14,7 +15,6 @@
                         :key="probe.value"
                         :label="probe.label"
                         :value="probe.value"
-
                     >
 
                     </el-option>
@@ -22,7 +22,7 @@
           </div>
       </template>
         <div>
-            <div v-if="options.probeHandler!=''">
+            <div v-if="options.probeHandler!=''&&options.probeHandler!=undefined">
                 <div>
                     <el-row :gutter="20">
                         <el-col :span="8">
@@ -170,7 +170,6 @@ const changeProbe=()=>{
     Reflect.deleteProperty(probeBasicConfig,'grpc')
     Reflect.deleteProperty(probeBasicConfig,'httpGet')
     if(data.options.probeHandler==''){
-
         emits('changeProbeEmit',{})
     }else {
 
@@ -179,6 +178,7 @@ const changeProbe=()=>{
     }
 }
 onBeforeMount(()=>{
+
     if(props.method=='Update'){
         const type=['exec','httpGet','tcpSocket','grpc']
         probeBasicConfig=props.probe

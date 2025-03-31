@@ -81,7 +81,17 @@ const submit=(tag,autoCreateService)=>{
 
     useItemer.item['apiVersion']='apps/v1'
     useItemer.item['kind']='StatefulSet'
-
+    useItemer.item.spec.template.spec.containers.forEach((item)=>{
+        if (item.livenessProbe== null || item.livenessProbe == undefined || (Object.keys(item.livenessProbe).length == 0) ) {
+            delete item.livenessProbe
+        }
+        if (item.startupProbe== null || item.startupProbe == undefined || (Object.keys(item.startupProbe).length == 0) ) {
+            delete item.startupProbe
+        }
+        if (item.readinessProbe== null || item.readinessProbe == undefined || (Object.keys(item.readinessProbe).length == 0) ) {
+            delete item.readinessProbe
+        }
+    })
     const itemTemp={
         "apiVersion":"apps/v1",
         "kind":"StatefulSet",

@@ -20,6 +20,9 @@ onBeforeMount( async ()=>{
 
     await getService(requestQuery).then((res)=>{
        data.item=JSON.parse(JSON.stringify(res.data.data.item))
+        if(route.query.method=='Copy'){
+            delete data.item.spec.clusterIPs
+        }
     })
     ready.value=true
 })

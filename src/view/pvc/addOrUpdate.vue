@@ -318,7 +318,7 @@ const open = (msg) => {
     )
         .then(() => {
             route.replace({
-                path:'/persistentvolumeclaim/list',
+                path:'/pvc/list',
                 query:{
                     clusterId:data.clusterId,
                 }

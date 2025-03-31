@@ -243,6 +243,19 @@ onBeforeMount(()=>{
             }
         }
         tabIndex=data.containers.length
+        if(props.method!='Create'){
+            data.containers.forEach((item)=>{
+                if(item.env==undefined){
+                    item.env=[]
+                }
+                if(item.ports==undefined){
+                    item.prots=[]
+                }
+                if(item.envFrom==undefined){
+                    item.envFrom=[]
+                }
+            })
+        }
 
 
 })

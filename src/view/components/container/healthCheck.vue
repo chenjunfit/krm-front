@@ -30,17 +30,33 @@ const props=defineProps({
 onBeforeMount(()=>{
     if(props.method!='Create'){
         if(!props.container.hasOwnProperty('startupProbe')){
-            props.container['startupProbe']={}
+            props.container['startupProbe']={
+                // initialDelaySeconds:30,
+                // periodSeconds:5,
+                // timeoutSeconds:10,
+                // failureThreshold:3,
+                // successThreshold:1,
+            }
         }
         if(!props.container.hasOwnProperty('livenessProbe')){
-            props.container['livenessProbe']={}
+            props.container['livenessProbe']={
+                // initialDelaySeconds:30,
+                // periodSeconds:5,
+                // timeoutSeconds:10,
+                // failureThreshold:3,
+                // successThreshold:1,
+            }
         }
         if(!props.container.hasOwnProperty('readinessProbe')){
-            props.container['readinessProbe']={}
+            props.container['readinessProbe']={
+                // initialDelaySeconds:30,
+                // periodSeconds:5,
+                // timeoutSeconds:10,
+                // failureThreshold:3,
+                // successThreshold:1,
+            }
         }
     }
-
-
 })
 </script>
 

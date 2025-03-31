@@ -18,7 +18,7 @@
                     v-for="t in options.items"
                     :key="t.metadata.name"
                     :label="t.metadata.name"
-                    :value="t"
+                    :value="t.metadata.name"
             >
             </el-option>
         </el-select>
@@ -84,9 +84,9 @@
                                                         >
                                                             <el-option
                                                                 v-for="s in data.options.serviceSelected"
-                                                                :key="s.metadata.name"
-                                                                :value="s.metadata.name"
-                                                                :label="s.metadata.name"
+                                                                :key="s"
+                                                                :value="s"
+                                                                :label="s"
 
                                                             />
                                                         </el-select>
@@ -406,7 +406,6 @@ const addRule=()=>{
     data.item.spec.rules.unshift(JSON.parse(JSON.stringify(rule)))
 }
 const addPath=(index)=>{
-
     data.item.spec.rules[index].http.paths.unshift(JSON.parse(JSON.stringify(data.options.path)))
 
 }
@@ -488,15 +487,15 @@ onBeforeMount(()=>{
         data.item=JSON.parse(JSON.stringify(props.item))
         data.options.labelList=object2list(props.item.metadata.labels)
         data.options.annotationList=object2list(props.item.metadata.annotations)
-    }
-    data.item.spec.rules.forEach((rule)=>{
-        rule.http.paths.forEach((path)=>{
-            if(data.options.serviceSelected.indexOf(path.backend.service.name)==-1){
-                data.options.serviceSelected.push(path.backend.service.name)
-            }
-
+        data.item.spec.rules.forEach((rule)=>{
+            rule.http.paths.forEach((path)=>{
+                if(data.options.serviceSelected.indexOf(path.backend.service.name)==-1){
+                    data.options.serviceSelected.push(path.backend.service.name)
+                }
+            })
         })
-    })
+    }
+
 })
 
 </script>

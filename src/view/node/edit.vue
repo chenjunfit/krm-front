@@ -29,7 +29,7 @@
                         </el-table>
                 </el-tab-pane>
                 <el-tab-pane label="污点配置" >
-                    <el-table :data="editItem.spec.taints" style="width: 100%;height: 400px;">
+                    <el-table :data="data.taintList" style="width: 100%;height: 400px;">
                         <el-table-column prop="key" label="key" width="220" >
                             <template #default="scope">
                                 <el-input v-model="scope.row.key" placeholder="请输入标签的Key"/>
@@ -88,10 +88,11 @@ import {updateNode} from "../../api/cluster/cluster.js";
 const data=reactive({
     editItem:{
         spec:{
-            taints:[]
+            taints:Object,
         }
     },
     labelList:[],
+    taintList:[],
     taintsOptions:[
         {label:"禁止调度",value:"NoSchedule"},
         {label:"尽量不调度",value:"PreferNoSchedule"},
@@ -107,6 +108,7 @@ const emits=defineEmits(["callback","closeDialogEmit"])
 const onSubmit = () => {
     loading.value=true
     data.editItem.metadata.labels=list2object(data.labelList)
+    data.editItem.spec.taints=data.taintList
     updateNode(props.ClusterId,data.editItem.metadata.name,data.editItem).then((response)=>{
         ElMessage({
             message:response.data.message,
@@ -128,12 +130,15 @@ const props=defineProps({
         type: String
     }
 })
-onMounted(()=>{
+onBeforeMount(()=>{
     //这么传递会影响父组件数据，单向数据流的约定
-
     data.editItem=JSON.parse(JSON.stringify(props.EditItem))
-    data.labelList= object2list(data.editItem.metadata.labels)
-
+    if(data.editItem.metadata.labels!=null&&data.editItem.metadata.labels!=undefined){
+        data.labelList=object2list(data.editItem.metadata.labels)
+    }else{
+        data.labelList=[]
+    }
+    data.taintList=data.editItem.spec.taints
 })
 
 const addLabelRow=()=>{
@@ -149,7 +154,7 @@ const addTaintRow=()=>{
         value:"",
         effect:"NoExecute"
     }
-    data.editItem.spec.taints.unshift(taintRow)
+    data.taintList.unshift(taintRow)
 }
 </script>
 <style scoped>

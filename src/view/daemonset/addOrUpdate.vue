@@ -79,7 +79,17 @@ const submit=(tag,autoCreateService)=>{
 
     useItemer.item['apiVersion']='apps/v1'
     useItemer.item['kind']='DaemonSet'
-
+    useItemer.item.spec.template.spec.containers.forEach((item)=>{
+        if (item.livenessProbe== null || item.livenessProbe == undefined || (Object.keys(item.livenessProbe).length == 0) ) {
+            delete item.livenessProbe
+        }
+        if (item.startupProbe== null || item.startupProbe == undefined || (Object.keys(item.startupProbe).length == 0) ) {
+            delete item.startupProbe
+        }
+        if (item.readinessProbe== null || item.readinessProbe == undefined || (Object.keys(item.readinessProbe).length == 0) ) {
+            delete item.readinessProbe
+        }
+    })
     const itemTemp={
         "apiVersion":"apps/v1",
         "kind":"DaemonSet",
@@ -122,7 +132,7 @@ const changeStrategy=(val)=>{
     }else {
         useItemer.item.spec.updateStrategy.rollingUpdate={
             maxUnavailable:'25%',
-            maxSurge:'25%',
+            maxSurge:0,
         }
     }
 }
@@ -143,7 +153,7 @@ onBeforeMount(()=>{
             type:"RollingUpdate",
             rollingUpdate:{
                 maxUnavailable:'25%',
-                maxSurge:'25%',
+                maxSurge:0,
             }
         }
     }
