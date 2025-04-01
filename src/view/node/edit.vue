@@ -62,7 +62,7 @@
                                 <el-button type="primary" @click="addTaintRow">添加</el-button>
                             </template>
                             <template #default="scope">
-                                <el-button  type="primary" color="red" @click="deleteTableRow(editItem.spec.taints,scope.$index)">删除</el-button>
+                                <el-button  type="primary" color="red" @click="deleteTableRow(data.taintList,scope.$index)">删除</el-button>
                             </template>
                         </el-table-column>
 
@@ -83,7 +83,7 @@
 import {onBeforeMount, onMounted, reactive, ref, toRefs} from 'vue'
 import {ElMessage} from "element-plus";
 import {object2list,deleteTableRow,list2object} from "../../utils/index.js";
-import {updateNode} from "../../api/cluster/cluster.js";
+import {getNodeList, updateNode} from "../../api/cluster/cluster.js";
 // do not use same name with ref
 const data=reactive({
     editItem:{
@@ -138,7 +138,13 @@ onBeforeMount(()=>{
     }else{
         data.labelList=[]
     }
-    data.taintList=data.editItem.spec.taints
+    if(data.editItem.spec.taints==undefined){
+        data.taintList=[]
+    }else {
+        data.taintList=data.editItem.spec.taints
+    }
+
+
 })
 
 const addLabelRow=()=>{

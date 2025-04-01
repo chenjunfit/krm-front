@@ -27,7 +27,7 @@
                       height="400px"
                       :default-sort="{ prop: 'id', order: 'ascending' }"
             >
-                <el-table-column fixed prop="" align="center" label="主机名" width="120" >
+                <el-table-column fixed prop="" align="center" label="主机名" width="240" >
                     <template #default="scope" >
                         <el-button link type="primary" size="small" @click="detailNode(scope.row)" >
                             {{scope.row.metadata.name}}
@@ -52,6 +52,7 @@
                             :item="scope.row"
                             taint-type="NoSchedule"
                             :cluster-id="data.clusterId"
+                            :key="scope.row.metadata.name+'NoSchedule'+new Date().getTime()"
                         >
 
                         </TaintOptions>
@@ -63,13 +64,24 @@
                             :item="scope.row"
                             taint-type="NoExecute"
                             :cluster-id="data.clusterId"
+                            :key="scope.row.metadata.name+'NoExecute'+new Date().getTime()"
                         >
                         </TaintOptions>
                     </template>
                 </el-table-column>
-                <el-table-column fixed="right" align="center" label="操作" min-width="100">
+                <el-table-column fixed="right" align="center" label="操作" >
                     <template #default="scope" >
                         <el-button link type="primary" size="small" @click="updateNode(scope.row)" :disabled="scope.row.status=='Active'">编辑</el-button>
+                        <MatchPod
+                            :cluster-id="data.clusterId"
+                            button-name="查看pod列表"
+                            resource-type="节点"
+                            :resource-name="scope.row.metadata.name"
+                            :field-selector="'spec.nodeName='+scope.row.metadata.name"
+                            label-selector=""
+                        >
+
+                        </MatchPod>
                     </template>
                 </el-table-column>
 
@@ -84,6 +96,7 @@
                 :append-to-body="true"
                 :title="clusterId+'-'+editNodeName"
                 :center="true"
+
                 width="60%"
                 @close="closeDialog"
                 destroy-on-close
@@ -106,6 +119,8 @@
                 destroy-on-close
             >
                 <Detail :DetailItem="detailItem"
+                        :name-space="data.nameSpace"
+                        :cluster-id="data.clusterId"
                         @close-dialog-emit="closeDialogEmit"
                 >
 
@@ -127,6 +142,7 @@ import node from "../../routers/cluster/node.js";
 import Detail from "./detail.vue";
 import ClusterNamespaceSelect from "../components/clusterNamespaceSelect.vue";
 import TaintOptions from "./components/taintOptions.vue";
+import MatchPod from "../components/matchPod.vue";
 const loading=ref(true)
 const nodeDialog=ref(false)
 const detailDialog=ref(false)
@@ -148,8 +164,8 @@ await getClusterList().then((response)=>{
      data.clusterList=response.data.data.items
 })
 }
-const getNodeListHandler=()=>{
 
+const getNodeListHandler=()=>{
     getNodeList(data.clusterId).then((response)=>{
         data.items=response.data.data.items
         loading.value=false

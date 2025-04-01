@@ -1,9 +1,16 @@
 <script setup>
 import {computed} from "vue";
+import MatchPod from "../components/matchPod.vue";
 
 const props=defineProps({
     DetailItem:{
         type: Object
+    },
+    clusterId:{
+        type:String
+    },
+    nameSpace:{
+        type:String
     }
 })
 const getNoeRole=computed(()=>{
@@ -38,7 +45,16 @@ const getNoeRole=computed(()=>{
             </el-tag>
         </el-descriptions-item>
         <el-descriptions-item label="Pod">
-            <el-button type="primary">查看</el-button>
+            <MatchPod
+                :cluster-id="clusterId"
+                :name-space="nameSpace"
+                resource-type="节点"
+                :resource-name="props.DetailItem.metadata.name"
+                :field-selector="'spec.nodeName='+props.DetailItem.metadata.name"
+                label-selector=""
+            >
+
+            </MatchPod>
         </el-descriptions-item>
         <el-descriptions-item label="系统">
             <span>{{props.DetailItem.status.nodeInfo.osImage}}</span>
