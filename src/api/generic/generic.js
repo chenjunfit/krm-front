@@ -16,3 +16,11 @@ export const listHandler=(resourceType,clusterId,nameSpace)=>{
         2000
     )
 }
+export const restartHandler=(resourceType,name,clusterId,nameSpace)=>{
+    const BASE_URL=import.meta.env.VITE_BASE_URL
+    const url=resourceType.toLowerCase()
+    const api=`${BASE_URL}/${url}/restart`
+    return request(api,'get',{name,clusterId,nameSpace},
+        2000
+    )
+}

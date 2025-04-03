@@ -135,7 +135,7 @@ const handlechange=(currentValue,oldValue,type,row)=>{
                ElMessage.success(res.data.message)
            }).catch((res)=>{
                row.spec.replicas=oldValue
-               ElMessage.success(res.data.message)
+               ElMessage.error(res.data.message)
            })
         })
         .catch(() => {
