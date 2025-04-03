@@ -5,7 +5,7 @@ export const deleteHandler=(resourceType,clusterId,nameSpace,name)=>{
     const url=resourceType.toLowerCase()
     const api=`${BASE_URL}/${url}/delete`
     return request(api,'post',{clusterId,nameSpace,name},
-        2000
+        5000
     )
 }
 export const listHandler=(resourceType,clusterId,nameSpace)=>{
@@ -13,7 +13,7 @@ export const listHandler=(resourceType,clusterId,nameSpace)=>{
     const url=resourceType.toLowerCase()
     const api=`${BASE_URL}/${url}/list`
     return request(api,'get',{clusterId,nameSpace},
-        2000
+        5000
     )
 }
 export const restartHandler=(resourceType,name,clusterId,nameSpace)=>{
@@ -21,6 +21,6 @@ export const restartHandler=(resourceType,name,clusterId,nameSpace)=>{
     const url=resourceType.toLowerCase()
     const api=`${BASE_URL}/${url}/restart`
     return request(api,'get',{name,clusterId,nameSpace},
-        2000
+        5000
     )
 }

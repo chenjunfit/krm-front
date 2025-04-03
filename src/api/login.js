@@ -8,12 +8,12 @@ export const login=(username,password)=>{
             userName:username,
             password:password
         },
-        2000
+        5000
     )
 }
 export const logout=()=>{
     return request(API_CONFIG.loginOutApi,'post',
         {},
-        2000
+        5000
     )
 }

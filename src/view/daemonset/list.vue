@@ -37,6 +37,7 @@
                             :name-space="data.nameSpace"
                             ResourceType="DaemonSet"
                             @deleteCallBack="getList"
+                            :item="scope.row"
                         />
                     </template>
                 </el-table-column>

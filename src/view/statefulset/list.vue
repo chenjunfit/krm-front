@@ -47,6 +47,7 @@
                             :name-space="data.nameSpace"
                             ResourceType="StatefulSet"
                             @deleteCallBack="deleteCallBack"
+                            :item="scope.row"
                         />
                     </template>
                 </el-table-column>

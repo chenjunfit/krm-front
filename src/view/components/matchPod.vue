@@ -95,7 +95,7 @@ const props=defineProps({
         type:String
     },
     labelSelector:{
-        type:String
+        type:Object
     },
     resourceType:{
         type:String
@@ -107,15 +107,22 @@ const props=defineProps({
 
 const visable=ref(false)
 const getPodListHanler=async ()=>{
-    await getPodList(props.clusterId,props.nameSpace,props.fieldSelector,props.labelSelector).then((res)=>{
+    let labelSelector=""
+    if(props.labelSelector!=null&&props.labelSelector!=undefined){
+        let labelSelectorList=[]
+        for(let [key,value] of Object.entries(props.labelSelector)){
+            const keyValueString=`${key}=${value}`
+            labelSelectorList.push(keyValueString)
+        }
+        labelSelector=labelSelectorList.join(',')
+    }
+    await getPodList(props.clusterId,props.nameSpace,props.fieldSelector,labelSelector).then((res)=>{
         items.value=res.data.data.items
     })
 }
 const showPod=async ()=>{
     visable.value=true
-    await getPodList(props.clusterId,props.nameSpace,props.fieldSelector,props.labelSelector).then((res)=>{
-        items.value=res.data.data.items
-    })
+    await getPodListHanler()
 }
 const getContainerStatus=computed(()=> (containerName,containerStatues)=>{
     if(containerStatues==undefined){

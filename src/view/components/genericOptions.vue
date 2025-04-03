@@ -3,13 +3,38 @@
         <el-button  link type="warning" size="small" @click="deleteItem" >删除</el-button>
         <el-button v-if="['Deployment','StatefulSet','DaemonSet'].includes(props.ResourceType)"  link type="warning" size="small" @click="restartItem" >重启</el-button>
         <el-button  link type="primary" size="small" @click="editItem('Copy')" >复制</el-button>
+        <el-dropdown @command="handleCommand" v-if="['Deployment','StatefulSet','DaemonSet','CronJob'].includes(props.ResourceType)" style="margin-top: 3px;margin-left: 5px">
+         <span class="el-dropdown-link"><el-button type="primary" link size="small">更多</el-button><el-icon class="el-icon--right">
+        <arrow-down />
+      </el-icon>
+    </span>
+                <template #dropdown>
+                        <el-dropdown-menu>
+                                <el-dropdown-item v-if="props.ResourceType=='Deployment'" command="rollback">回滚</el-dropdown-item>
+                                <el-dropdown-item command="updateImage">更新镜像</el-dropdown-item>
+                                <el-dropdown-item v-if="props.ResourceType!='CronJob'" >
+                                    <MatchPod
+                                            button-name="关联Pod"
+                                            :cluster-id="props.clusterId"
+                                            :name-space="props.nameSpace"
+                                            :resource-type="props.ResourceType"
+                                            :resource-name="props.item.metadata.name"
+                                            field-selector=""
+                                            :label-selector="props.item.spec.selector.matchLabels"
+                                    >
+                                    </MatchPod>
+                                </el-dropdown-item>
+                        </el-dropdown-menu>
+                </template>
+        </el-dropdown>
 </template>
 
 <script setup>
-import {deleteDeployment, updateDeployment} from "../../api/scheduler/deployment/deployment.js";
 import {ElMessage, ElMessageBox} from "element-plus";
 import {useRouter} from "vue-router";
 import {deleteHandler, restartHandler} from "../../api/generic/generic.js";
+import { ArrowDown } from '@element-plus/icons-vue'
+import MatchPod from "./matchPod.vue";
 const router=useRouter()
 const props=defineProps({
         ResourceType:{
@@ -26,8 +51,13 @@ const props=defineProps({
         name:{
                 type:String,
                 required:true
+        },
+        item:{
+            type:Object
         }
 })
+const handleCommand = (command) => {
+}
 const emits=defineEmits(['deleteCallBack'])
 const restartItem=()=>{
         ElMessageBox.confirm(

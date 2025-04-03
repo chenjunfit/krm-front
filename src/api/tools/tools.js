@@ -4,6 +4,6 @@ import request from '../index.js'
 
 export const createOrUpdateByYaml=(data)=>{
     return request(API_CONFIG.yamlCreateOrUpdate,'post',data,
-        2000
+        5000
     )
 }
