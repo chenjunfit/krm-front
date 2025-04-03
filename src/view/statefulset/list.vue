@@ -26,9 +26,9 @@
 
                     <span>1/1</span>
                 </el-table-column>
-                <el-table-column prop="" align="center" label="副本" width="100px" >
+                <el-table-column prop="" align="center" label="副本" width="160px" >
                     <template #default="scope">
-                        <el-input v-model="scope.row.spec.replicas" :min="0" :max="100" placeholder="副本数"/>
+                        <el-input-number :controls="false" style="width: 100px" v-model="scope.row.spec.replicas" :min="0" :max="100" placeholder="副本数" @change="(currentValue,oldValue)=>handlechange(currentValue,oldValue,'StatefulSet',scope.row)"/>
                     </template>
                 </el-table-column>
                 <el-table-column prop="" align="center"  label="Handless Service" width="160px" >
@@ -79,8 +79,9 @@ import {yaml} from "@codemirror/legacy-modes/mode/yaml";
 import {obj2yaml} from "../../utils/index.js";
 import DialogYaml from "../components/dialogYaml/dialogYaml.vue";
 import {useRouter} from 'vue-router'
-import {deleteStatefulset, getStatefulsetList} from "../../api/scheduler/statefulset/statefulset.js";
+import {deleteStatefulset, getStatefulsetList, updateStatefulset} from "../../api/scheduler/statefulset/statefulset.js";
 import GenericOptions from "../components/genericOptions.vue";
+import {updateDeployment} from "../../api/scheduler/deployment/deployment.js";
 const router=useRouter()
 
 const detailDialog=ref(false)
@@ -92,6 +93,33 @@ const data=reactive({
 })
 const search = ref('')
 const {clusterId,namespace,items,yamlData}=toRefs(data)
+const handlechange=(currentValue,oldValue,type,row)=>{
+    ElMessageBox.confirm(
+        `是否修改${type}:${row.metadata.name}的副本数为${currentValue}?`,
+        {
+            confirmButtonText: '确定',
+            cancelButtonText: '取消',
+            type: 'warning',
+        }
+    )
+        .then(async () => {
+            const postData={
+                clusterId: data.clusterId,
+                namespace: data.nameSpace,
+                item: row,
+            }
+            await updateStatefulset(postData).then((res)=>{
+                ElMessage.success(res.data.message)
+            }).catch((res)=>{
+                row.spec.replicas=oldValue
+                ElMessage.success(res.data.message)
+            })
+        })
+        .catch(() => {
+            row.spec.replicas=oldValue
+        })
+}
+
 const filterTableData = computed(() =>
     (data.items||[]).filter(
         (item) =>

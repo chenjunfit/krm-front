@@ -26,9 +26,9 @@
 
                     <span>1/1</span>
                 </el-table-column>
-                <el-table-column prop="" align="center" label="副本" width="100" >
+                <el-table-column prop="" align="center" label="副本" width="160" >
                     <template #default="scope">
-                        <el-input v-model="scope.row.spec.replicas" :min="0" :max="100" placeholder="副本数"/>
+                        <el-input-number style="width: 100px" :controls="false" v-model="scope.row.spec.replicas" :min="0" :max="100" placeholder="副本数" @change="(currentValue,oldValue)=>handlechange(currentValue,oldValue,'Deployment',scope.row)"/>
                     </template>
                 </el-table-column>
                 <el-table-column prop="" align="center"  label="暂停更新" width="120" >
@@ -68,7 +68,7 @@
 <script setup>
 import ClusterNamespaceSelect from "../components/clusterNamespaceSelect.vue";
 import List from "../components/list.vue"
-import {computed, onBeforeMount, onMounted, reactive, ref, toRefs} from "vue";
+import {computed, onBeforeMount, onMounted, reactive, ref, toRefs, watch} from "vue";
 import {deletePod, getPodList} from "../../api/scheduler/pod/pod.js";
 import {ElMessage, ElMessageBox} from "element-plus";
 import {getClusterList} from "../../api/cluster/cluster.js";
@@ -77,7 +77,7 @@ import {Codemirror} from "vue-codemirror";
 import codeMirror from "../components/codeMirror.vue"
 import {yaml} from "@codemirror/legacy-modes/mode/yaml";
 import {obj2yaml} from "../../utils/index.js";
-import {deleteDeployment, getDeploymentList} from "../../api/scheduler/deployment/deployment.js";
+import {deleteDeployment, getDeploymentList, updateDeployment} from "../../api/scheduler/deployment/deployment.js";
 import DialogYaml from "../components/dialogYaml/dialogYaml.vue";
 import {useRouter} from 'vue-router'
 import GenericOptions from "../components/genericOptions.vue";
@@ -92,6 +92,34 @@ const data=reactive({
 })
 const search = ref('')
 const {clusterId,namespace,items,yamlData}=toRefs(data)
+const oldReplicas=ref('')
+const handlechange=(currentValue,oldValue,type,row)=>{
+    ElMessageBox.confirm(
+        `是否修改${type}:${row.metadata.name}的副本数为${currentValue}?`,
+        {
+            confirmButtonText: '确定',
+            cancelButtonText: '取消',
+            type: 'warning',
+        }
+    )
+        .then(async () => {
+            const postData={
+                clusterId: data.clusterId,
+                namespace: data.nameSpace,
+                item: row,
+            }
+          await updateDeployment(postData).then((res)=>{
+               ElMessage.success(res.data.message)
+           }).catch((res)=>{
+               row.spec.replicas=oldValue
+               ElMessage.success(res.data.message)
+           })
+        })
+        .catch(() => {
+            row.spec.replicas=oldValue
+        })
+}
+
 const filterTableData = computed(() =>
     (data.items||[]).filter(
         (item) =>
