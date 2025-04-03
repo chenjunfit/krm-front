@@ -45,7 +45,7 @@
                 </el-table-column>
                 <el-table-column fixed="right" align="center" label="操作" >
                     <template #default="scope" >
-                        <el-button :disabled="scope.row.metadata.deletionTimestamp!=null" link type="primary" size="small" @click="deleteNs(scope.row)" >资源复制</el-button>
+                        <el-button :disabled="scope.row.metadata.deletionTimestamp!=null" link type="primary" size="small" @click="copyNamespace(scope.row)" >资源复制</el-button>
                         <el-button :disabled="scope.row.metadata.deletionTimestamp!=null" link type="primary" size="small" @click="updateNamespace(scope.row)" >编辑</el-button>
                         <el-button :disabled="scope.row.metadata.deletionTimestamp!=null" link type="primary" size="small" @click="deleteNs(scope.row)" >删除</el-button>
 
@@ -129,24 +129,81 @@
                     </div>
                 </div>
             </el-dialog>
+            <el-dialog
+                v-model="showNamespaceCopy"
+                :append-to-body="true"
+                :title="'复制集群 '+copyForm.clusterId+'命名空间 '+copyForm.namespace"
+                :center="true"
+                width="60%"
+                @close="closeDialog"
+                destroy-on-close
+            >
+                <el-form :model="copyForm" ref="copyFormRef">
+                    <el-tabs v-model="activeName" tab-position="left" @tab-click="tabClick">
+                        <el-tab-pane name="copyDest" label="复制目标">
+                            <el-form-item label="命名空间">
+                                <el-radio-group v-model="copyForm.createNamespace">
+                                    <el-radio :label="true" size="large">新建namespace</el-radio>
+                                    <el-radio :label="false" size="large">使用已有namespace</el-radio>
+                                </el-radio-group>
+                            </el-form-item>
+                            <el-form-item label="配置目标">
+                                <cluster-namespace-select
+                                :ShowNamespace="!data.copyForm.createNamespace"
+                                @clusterChangeCallback="destClusterChanged"
+                                @namespaceChangeCallback="destNamespaceChanged"
+                                >
+                                </cluster-namespace-select>
+                                <el-input v-show="data.copyForm.createNamespace" v-model.trim="copyForm.toNamespace" placeholder="请输入命名空间" style="width: 180px;margin-left: 10px">
+
+                                </el-input>
+                            </el-form-item>
+                        </el-tab-pane>
+                        <el-tab-pane
+                            v-for="name in copyForm.resourceList"
+                            :key="name"
+                            :label="name"
+                            :name="name"
+                        >
+                            <el-transfer :titles="['源', '目标']" v-model="copyForm.toResources[name]" :data="copyForm.fromResources[name]" />
+                        </el-tab-pane>
+                    </el-tabs>
+                </el-form>
+                <div  style="margin-top: 10px;text-align: center">
+                    <el-button type="info" @click="clearCopyData">取消</el-button>
+                    <el-button type="primary" @click="submitNameSpaceCopy">复制</el-button>
+                </div>
+
+            </el-dialog>
         </template>
     </el-card>
 
 </template>
 
 <script setup>
-import {getClusterList, getNamespaceList,addNamespace,deleteNamespace} from "../../api/cluster/cluster.js";
+import {
+    getClusterList,
+    getNamespaceList,
+    addNamespace,
+    deleteNamespace,
+    copyNamespaceHandler
+} from "../../api/cluster/cluster.js";
 import {computed, onBeforeMount, reactive, ref, toRefs} from "vue";
 import {Check,Close} from "@element-plus/icons-vue";
 import {useRoute} from "vue-router";
 import Edit from "./edit.vue";
 import Detail from "./detail.vue";
 import {ElMessage} from "element-plus";
+import ClusterNamespaceSelect from "../components/clusterNamespaceSelect.vue";
+import {listHandler} from "../../api/generic/generic.js";
 const loading=ref(true)
 const nodeDialog=ref(false)
 const detailDialog=ref(false)
 const createDialog=ref(false)
 const deleteDialog=ref(false)
+const showNamespaceCopy=ref(false)
+const activeName=ref('copyDest')
+const copyFormRef=ref('')
 const search = ref('')
 const data=reactive({
     items:[],
@@ -158,11 +215,94 @@ const data=reactive({
     detailNodeName:"",
     createName:"",
     deleteName:"",
-    deleteNameConfirm:""
+    deleteNameConfirm:"",
+
+    copyForm:{
+        clusterId:"",
+        namespace:"",
+        toClusterId:"",
+        toNamespace:"",
+        createNamespace:false,
+        resourceList:[
+            "Deployment",
+            "StatefulSet",
+            "DaemonSet",
+            "Service",
+            "ConfigMap",
+            "Secret",
+            "CronJob"
+        ],
+        toResources:{
+            Deployment:[],
+            StatefulSet:[],
+            DaemonSet:[],
+            Service:[],
+            ConfigMap:[],
+            Secret:[],
+            CronJob:[],
+        },
+        fromResources:{
+            Deployment:[],
+            StatefulSet:[],
+            DaemonSet:[],
+            Service:[],
+            ConfigMap:[],
+            Secret:[],
+            CronJob:[],
+        },
+    }
+
 
 })
-const {clusterId,clusterList,editItem,editNodeName,detailNodeName,detailItem,createName,deleteName,deleteNameConfirm}=toRefs(data)
+const {clusterId,clusterList,editItem,editNodeName,detailNodeName,detailItem,createName,deleteName,deleteNameConfirm,copyForm}=toRefs(data)
 const route=useRoute()
+const clearCopyData=()=>{
+    data.copyForm.toResources=JSON.parse(JSON.stringify({
+        Deployment:[],
+        StatefulSet:[],
+        DaemonSet:[],
+        Service:[],
+        ConfigMap:[],
+        Secret:[],
+        CronJob:[],
+    }))
+    showNamespaceCopy.value=false
+}
+const submitNameSpaceCopy= async ()=>{
+    await copyNamespaceHandler(data.copyForm).then((res)=>{
+        ElMessage.success(res.data.message)
+    })
+}
+const tabClick= async (paneName,event)=>{
+    if(paneName.paneName!="copyDest"){
+       await listHandler(paneName.paneName,data.copyForm.clusterId,data.copyForm.namespace).then((res)=>{
+           console.log(paneName.paneName,data.copyForm.clusterId,data.copyForm.namespace)
+           const items=res.data.data.items
+           const itemListName=[]
+           if(items!=null){
+               items.forEach((item)=>{
+                   itemListName.push({
+                       key: item.metadata.name,
+                       label:item.metadata.name
+                   })
+               })
+               data.copyForm.fromResources[paneName.paneName]=itemListName
+           }
+
+        })
+    }
+
+}
+const toResourceList=computed(()=>{
+    return Object.keys(data.copyForm.toResources)
+})
+const destNamespaceChanged=(destClusterId,destNamespace)=>{
+    data.copyForm.toNamespace=destNamespace
+    data.copyForm.toClusterId=destClusterId
+}
+const destClusterChanged=(destClusterId)=>{
+    data.copyForm.toClusterId=destClusterId
+}
 const  getAllClusters=async ()=>{
     await getClusterList().then((response)=>{
         data.clusterList=response.data.data.items
@@ -203,6 +343,12 @@ const detailNode=(row)=>{
 
 const createNamespace=()=>{
     createDialog.value=true
+}
+const copyNamespace=(row)=>{
+    activeName.value="copyDest"
+    showNamespaceCopy.value=true
+    data.copyForm.clusterId=data.clusterId
+    data.copyForm.namespace=row.metadata.name
 }
 const submitCreateNamespace=()=>{
 

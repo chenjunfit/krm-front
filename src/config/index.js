@@ -20,6 +20,7 @@ export const API_CONFIG={
     namespaceListApi:`${BASE_URL}/namespace/list`,
     namespaceCreateApi:`${BASE_URL}/namespace/add`,
     namespaceUpdateApi:`${BASE_URL}/namespace/update`,
+    namespaceCopyApi:`${BASE_URL}/namespace/copy`,
     namespaceDeleteApi:`${BASE_URL}/namespace/delete`,
     //pod相关的api
     podListApi:`${BASE_URL}/pod/list`,

@@ -62,3 +62,8 @@ export const deleteNamespace=(clusterId,name)=>{
         2000
     )
 }
+export const copyNamespaceHandler=(data)=>{
+    return request(API_CONFIG.namespaceCopyApi,'post',data,
+        10000
+    )
+}
