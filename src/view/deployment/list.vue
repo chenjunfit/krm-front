@@ -23,8 +23,10 @@
                 <el-table-column  prop="metadata.creationTimestamp" align="center" label="创建时间" sortable width="240"/>
                 <el-table-column  prop="metadata.namespace" align="center" label="命名空间" width="120"/>
                 <el-table-column prop="" align="center" label="状态" >
-
-                    <span>1/1</span>
+                    <template #default="scope">
+                        <span v-if="scope.row.spec.replicas!=0">{{scope.row.status.readyReplicas?scope.row.status.readyReplicas:'0'}}/{{scope.row.spec.replicas}}</span>
+                        <span v-else></span>
+                    </template>
                 </el-table-column>
                 <el-table-column prop="" align="center" label="副本" width="160" >
                     <template #default="scope">

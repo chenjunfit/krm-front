@@ -23,8 +23,10 @@
                 <el-table-column  prop="metadata.creationTimestamp" align="center" label="创建时间" sortable width="240"/>
                 <el-table-column  prop="metadata.namespace" align="center" label="命名空间" width="120"/>
                 <el-table-column prop="" align="center" label="状态" >
-
-                    <span>1/1</span>
+                    <template #default="scope">
+                        <span v-if="scope.row.status.desiredNumberScheduled!=0">{{scope.row.status.numberReady?scope.row.status.numberReady:'0'}}/{{scope.row.status.desiredNumberScheduled}}</span>
+                        <span v-else></span>
+                    </template>
                 </el-table-column>
                 <el-table-column fixed="right" align="center" label="操作" width="240">
                     <template #default="scope" >
