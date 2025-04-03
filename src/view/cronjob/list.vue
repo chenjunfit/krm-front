@@ -33,7 +33,7 @@
                             inline-prompt
                             active-text="是"
                             inactive-text="否"
-                            :before-change="beforeChangeSuspend.bind(this,scope.row)"
+                            @change="updateSusPend(scope.row)"
                         >
 
                         </el-switch>
@@ -85,8 +85,9 @@ import {obj2yaml} from "../../utils/index.js";
 import DialogYaml from "../components/dialogYaml/dialogYaml.vue";
 import {useRouter} from 'vue-router'
 import {deleteDaemonset, getDaemonsetList} from "../../api/scheduler/daemonset/daemonset.js";
-import {deleteCronJob, getCronJobList} from "../../api/scheduler/cronjob/cronjob.js";
+import {deleteCronJob, getCronJobList, updateCronJob} from "../../api/scheduler/cronjob/cronjob.js";
 import GenericOptions from "../components/genericOptions.vue";
+import {updateDeployment} from "../../api/scheduler/deployment/deployment.js";
 const router=useRouter()
 
 const detailDialog=ref(false)
@@ -163,11 +164,26 @@ const editItem=(row)=>{
         }
     })
 }
-const beforeChangeSuspend=(row)=>{
-    return new Promise(async (resolve,reject)=>{
-        return resolve(true)
-        // return resolve(false)
-    })
+const updateSusPend=async (row)=>{
+    const postData={
+        clusterId: data.clusterId,
+        namespace:data.nameSpace,
+        item:row,
+    }
+    await updateCronJob(postData).then((res)=>{
+        if(res.data.status==200){
+            ElMessage.success(res.data.message)
+        }else{
+            ElMessage.error(res.data.message)
+            row.spec.suspend=!row.spec.suspend
+        }
+    }).catch(
+        err=>{
+            ElMessage.error(err.message)
+            row.spec.suspend=!row.spec.suspend
+        }
+    )
+
 }
 </script>
 

@@ -35,7 +35,7 @@
                 </el-table-column>
                 <el-table-column prop="" align="center"  label="暂停更新" width="120" >
                     <template #default="scope">
-                        <el-switch v-model="scope.row.spec.paused"/>
+                        <el-switch v-model="scope.row.spec.paused" @change="updatePaused(scope.row)"/>
                     </template>
                 </el-table-column>
                 <el-table-column fixed="right" align="center" label="操作" width="240">
@@ -73,7 +73,7 @@ import List from "../components/list.vue"
 import {computed, onBeforeMount, onMounted, reactive, ref, toRefs, watch} from "vue";
 import {deletePod, getPodList} from "../../api/scheduler/pod/pod.js";
 import {ElMessage, ElMessageBox} from "element-plus";
-import {getClusterList} from "../../api/cluster/cluster.js";
+import {getClusterList, updateNode} from "../../api/cluster/cluster.js";
 import Detail from "../namespace/detail.vue";
 import {Codemirror} from "vue-codemirror";
 import codeMirror from "../components/codeMirror.vue"
@@ -95,6 +95,27 @@ const data=reactive({
 const search = ref('')
 const {clusterId,namespace,items,yamlData}=toRefs(data)
 const oldReplicas=ref('')
+const updatePaused=async (row)=>{
+    const postData={
+        clusterId: data.clusterId,
+        namespace:data.nameSpace,
+        item:row,
+    }
+    await updateDeployment(postData).then((res)=>{
+        if(res.data.status==200){
+            ElMessage.success(res.data.message)
+        }else{
+            ElMessage.error(res.data.message)
+            row.spec.paused=!row.spec.paused
+        }
+    }).catch(
+        err=>{
+            ElMessage.error(err.message)
+            row.spec.paused=!row.spec.paused
+        }
+    )
+
+}
 const handlechange=(currentValue,oldValue,type,row)=>{
     ElMessageBox.confirm(
         `是否修改${type}:${row.metadata.name}的副本数为${currentValue}?`,
