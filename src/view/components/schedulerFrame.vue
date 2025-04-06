@@ -365,7 +365,7 @@ const visableChange=(val)=>{
         fieldSelector: "",
         labelSelector:'',
     }
-    getServiceList(params).then((res)=>{
+    getServiceList(params.clusterId,params.nameSpace).then((res)=>{
         data.options.serviceList=[]
         res.data.data.items.forEach((item)=>{
             if(item.spec.clusterIP=="None"){
