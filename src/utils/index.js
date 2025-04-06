@@ -36,6 +36,18 @@ export const list2object=(list)=>{
     }
     return  obj
 }
+export const objectToString=(obj,split)=>{
+    let labelSelector=""
+    if(obj!=null&&obj!=undefined){
+        let labelSelectorList=[]
+        for(let [key,value] of Object.entries(obj)){
+            const keyValueString=`${key}=${value}`
+            labelSelectorList.push(keyValueString)
+        }
+        labelSelector=labelSelectorList.join(split)
+    }
+    return labelSelector
+}
 export const obj2yaml=(obj)=>{
     let yamlData=null
 

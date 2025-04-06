@@ -27,6 +27,7 @@ export const API_CONFIG={
     podDeleteApi:`${BASE_URL}/pod/delete`,
     //deployment相关的api
     deploymentListApi:`${BASE_URL}/deployment/list`,
+    replicasetListApi:`${BASE_URL}/replicaset/list`,
     deploymentGetApi:`${BASE_URL}/deployment/get`,
     deploymentCreateApi:`${BASE_URL}/deployment/add`,
     deploymentUpdateApi:`${BASE_URL}/deployment/update`,

@@ -50,6 +50,7 @@
                             :clusterId="data.clusterId"
                             :name-space="data.nameSpace"
                             ResourceType="CronJob"
+                            :item="scope.row"
                             @deleteCallBack="getList"
                         />
                     </template>

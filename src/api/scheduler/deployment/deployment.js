@@ -26,3 +26,8 @@ export const addDeployment=(data)=>{
         5000
     )
 }
+export const getReplicasetList=(clusterId,nameSpace,fieldSelector,labelSelector)=>{
+    return request(API_CONFIG.replicasetListApi,'get',{clusterId,nameSpace,fieldSelector,labelSelector},
+        5000
+    )
+}

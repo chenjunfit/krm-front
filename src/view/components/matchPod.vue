@@ -1,6 +1,6 @@
 <template>
 
-<el-button link type="primary" @click="showPod" style="font-size: 12px">{{props.buttonName}}</el-button>
+<el-button link type="primary" @click="showPod" :style="{'font-size':props.fontSize}">{{props.buttonName}}</el-button>
   <el-dialog
           v-model="visable"
           append-to-body
@@ -84,6 +84,10 @@ const props=defineProps({
     buttonName:{
         type: String,
         default:"查看"
+    },
+    fontSize:{
+        type:String,
+        default: "12px"
     },
     clusterId:{
         type:String

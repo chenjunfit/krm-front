@@ -78,7 +78,6 @@
                             resource-type="节点"
                             :resource-name="scope.row.metadata.name"
                             :field-selector="'spec.nodeName='+scope.row.metadata.name"
-                            label-selector=""
                         >
 
                         </MatchPod>

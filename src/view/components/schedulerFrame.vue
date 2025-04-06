@@ -296,6 +296,16 @@ const submit=(tag)=>{
     let controllerLabelObj={}
     let podAnnoObj={}
     let podLabelObj={}
+    if(data.autoCreateService&&tag!='yaml'){
+        let portCount=0
+        useItemer.item.spec.template.spec.containers.forEach((c)=>{
+            portCount+= c.ports.length
+        })
+        if(portCount==0){
+            ElMessage.error('自动添加Service需要添加容器端口')
+            return
+        }
+    }
     if(radio.value=='true'){
         obj={
             app:useItemer.item.metadata.name

@@ -24,3 +24,11 @@ export const restartHandler=(resourceType,name,clusterId,nameSpace)=>{
         5000
     )
 }
+export const updateHandler=(resourceType,name,clusterId,nameSpace,item)=>{
+    const BASE_URL=import.meta.env.VITE_BASE_URL
+    const url=resourceType.toLowerCase()
+    const api=`${BASE_URL}/${url}/update`
+    return request(api,'post',{name,clusterId,nameSpace,item},
+        5000
+    )
+}
