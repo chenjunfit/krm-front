@@ -59,7 +59,7 @@
                 :nameSpace="data.nameSpace"
                 :showDialog="detailDialog"
                 :yamlContent="data.yamlData"
-                @closeDialogHandler="(val)=>{detailDialog=val}"
+                @closeDialogHandler="closeDialogHandler"
             >
 
             </DialogYaml>
@@ -96,6 +96,9 @@ const data=reactive({
 const search = ref('')
 const {clusterId,namespace,items,yamlData}=toRefs(data)
 const oldReplicas=ref('')
+const closeDialogHandler=(val)=>{
+    detailDialog.value=val
+}
 const updatePaused=async (row)=>{
     const postData={
         clusterId: data.clusterId,
@@ -161,6 +164,7 @@ const deleteCallBack=()=>{
 }
 const getList=()=>{
     getDeploymentList(data.clusterId,data.nameSpace).then((response)=>{
+        data.items=[]
         data.items=response.data.data.items
     })
 }
@@ -188,7 +192,7 @@ const detailNode=(row)=>{
     const item=JSON.parse(JSON.stringify(row))
     delete item.metadata.managedFields
     const itemTemp={
-        "apiVersion":"v1",
+        "apiVersion":"apps/v1",
         "kind":"Deployment",
         "metadata":item.metadata,
         "spec":item.spec

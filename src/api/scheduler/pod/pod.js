@@ -12,3 +12,9 @@ export const deletePod=(clusterId,nameSpace,name,ForceDelete)=>{
         5000
     )
 }
+export const deletePodList=(clusterId,nameSpace,deleteList,forceDelete)=>{
+    console.log("deletePodlist",clusterId,nameSpace,deleteList,forceDelete)
+    return request(API_CONFIG.podDeleteListApi,'post',{clusterId,nameSpace,deleteList,forceDelete},
+        5000
+    )
+}

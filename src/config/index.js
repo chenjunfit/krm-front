@@ -25,6 +25,9 @@ export const API_CONFIG={
     //pod相关的api
     podListApi:`${BASE_URL}/pod/list`,
     podDeleteApi:`${BASE_URL}/pod/delete`,
+    podDeleteListApi:`${BASE_URL}/pod/deletelist`,
+    podLogAPi:`${BASE_URL}/pod/log`,
+    podExecAPi:`${BASE_URL}/pod/exec`,
     //deployment相关的api
     deploymentListApi:`${BASE_URL}/deployment/list`,
     replicasetListApi:`${BASE_URL}/replicaset/list`,
@@ -88,7 +91,7 @@ export const API_CONFIG={
     configMapUpdateApi:`${BASE_URL}/configmap/update`,
     configMapDeleteApi:`${BASE_URL}/configmap/delete`,
     //tools
-    yamlCreateOrUpdate:`${BASE_URL}/yaml/create`,
+    yamlCreateOrUpdate:`${BASE_URL}/tools/yaml`,
 }
 export const TOKEN_CONFIG={
     "TOKEN_NAME":"Authorization"

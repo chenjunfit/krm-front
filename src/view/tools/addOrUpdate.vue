@@ -4,7 +4,14 @@
     @namespaceChangedRollback="namespaceChangedHandler"
 >
     <template #header>
-        <el-switch style="margin-left: 20px" v-model="options.update" active-text="存在仅更新" inactive-text="创建" inline-prompt size="large"></el-switch>
+        <el-switch style="margin-left: 20px"
+                   v-model="options.method"
+                   active-text="存在仅更新"
+                   inactive-text="创建"
+                   inline-prompt size="large"
+                   active-value="Apply"
+                   inactive-value="Create"
+        ></el-switch>
     </template>
     <template #main>
         <CodeMirror v-model="yamlData" height="600px"/>
@@ -12,6 +19,7 @@
             <el-button type="primary" @click="submit">创建</el-button>
         </div>
     </template>
+
 </CreateOrEditFrame>
 </template>
 
@@ -20,13 +28,15 @@ import {reactive, ref, toRefs} from "vue";
 import CreateOrEditFrame from "../components/createOrEditFrame.vue";
 import {useRouter} from "vue-router";
 import CodeMirror from "../components/codeMirror.vue";
-import {ElMessage} from "element-plus";
+import {ElMessage, ElMessageBox} from "element-plus";
 import {createOrUpdateByYaml} from "../../api/tools/tools.js";
+import Ping from "./websocket/ping.vue";
+import Term from "./websocket/term.vue";
 const route=useRouter()
 const data=reactive({
     clusterId:"",
     options:{
-        update:false
+        method:"Create"
     },
 })
 const {options}=toRefs(data)
@@ -39,10 +49,15 @@ const submit=()=>{
         const postData={
             clusterId:data.clusterId,
             yaml: yamlData.value,
-            apply: data.options.update
+            method: data.options.method
         }
         createOrUpdateByYaml(postData).then((res)=>{
-            ElMessage.success(res.data.message)
+            let tmpMsg=res.data.message
+            const msg= tmpMsg.replace("\n","<br/>")
+            ElMessageBox.alert(msg, '', {
+                confirmButtonText: 'OK',
+                dangerouslyUseHTMLString: true
+            })
         })
     }
 }

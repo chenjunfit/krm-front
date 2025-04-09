@@ -7,6 +7,7 @@
 import AddOrUpdate from "./addOrUpdate.vue";
 import {onBeforeMount, ref} from "vue";
 import {useItem} from "../../store/index.js";
+import Term from "./websocket/term.vue";
 
 const ready=ref(true)
 onBeforeMount(()=>{
