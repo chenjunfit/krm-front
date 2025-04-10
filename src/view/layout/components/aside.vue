@@ -1,7 +1,7 @@
 <template>
     <el-aside :style="{width:isCollapse?'64px':'240px'}" width="64px" style="border-right: 1px solid #cccccc;" class="el-aside">
         <div class="el-button">
-            <router-link to="/index">
+            <router-link to="/">
                 <el-button text class="el-button_el-button" style="font-size: 25px">
                     <el-icon :size="24" style="margin-right: 10px;padding-left: 15px"><MoonNight /></el-icon>
                     <span v-show="!isCollapse">KRM</span>

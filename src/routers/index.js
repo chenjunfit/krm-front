@@ -41,8 +41,14 @@ const routers=[
         name: "login"
     },
     {
-        path: '/index',
+        path: '/',
         component: Layout,
+        children: [
+            {
+                path:'/',
+                component: ()=>import('../view/home.vue')
+            }
+        ]
     },
 
 ]

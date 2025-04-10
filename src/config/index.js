@@ -8,6 +8,7 @@ export const API_CONFIG={
     userUpdateApi:`${BASE_URL}/user/update`,
     //集群相关的api
     clusterListApi:`${BASE_URL}/cluster/list`,
+    clusterStaticsApi:`${BASE_URL}/cluster/statics`,
     clusterDeleteApi:`${BASE_URL}/cluster/delete`,
     clusterCreateAPi:`${BASE_URL}/cluster/add`,
     clusterUpdateApi:`${BASE_URL}/cluster/update`,

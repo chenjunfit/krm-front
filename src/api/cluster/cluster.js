@@ -7,6 +7,11 @@ export const getClusterList=()=>{
         5000
     )
 }
+export const getClusterStatics=()=>{
+    return request(API_CONFIG.clusterStaticsApi,'get',{},
+        20000
+    )
+}
 export const getCluster=(clusterId)=>{
     return request(API_CONFIG.clusterGetApi,'get',{clusterId},
         5000

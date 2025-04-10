@@ -29,6 +29,7 @@
     flex-direction: row;
     justify-content: space-between;
     align-items: center;
+
  }
 .auto-layout{
      display: flex;
@@ -36,6 +37,7 @@
     /*自动换行*/
      flex-wrap: wrap;
      align-items: center;
+
 
  }
 </style>

@@ -57,7 +57,7 @@ const submitForm=()=>{
                 message: '登录成功',
                 type: 'success',
             })
-            router.replace('/index')
+            router.replace('/')
             const token=response.data.data.token
             window.localStorage.setItem(TOKEN_CONFIG.TOKEN_NAME,token)
         }
