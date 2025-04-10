@@ -72,6 +72,7 @@ export const API_CONFIG={
     ingressCreateApi:`${BASE_URL}/ingress/add`,
     ingressUpdateApi:`${BASE_URL}/ingress/update`,
     ingressDeleteApi:`${BASE_URL}/ingress/delete`,
+    ingressTopologyApi:`${BASE_URL}/ingress/topology`,
     //pvc
     pvcListApi:`${BASE_URL}/persistentvolumeclaim/list`,
     pvcGetApi:`${BASE_URL}/persistentvolumeclaim/get`,

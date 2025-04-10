@@ -43,6 +43,7 @@
                                 ResourceType="Ingress"
                                 @deleteCallBack="getList"
                         />
+                        <el-button type="primary" link @click="showTopology(scope.row)" style="font-size: 12px">拓扑图</el-button>
                     </template>
                 </el-table-column>
 
@@ -57,6 +58,36 @@
             >
 
             </DialogYaml>
+            <el-dialog
+                v-model="showTopologyVisable"
+                append-to-body
+                width="70%"
+                center
+                draggable
+            >
+                <template #header="{titleId,titleClass}">
+                    <div class="my-header">
+                        <div :id="titleId" :class="titleClass" style="margin: 10px auto 0 auto">
+                            <el-tag title="集群">
+                                {{data.clusterId}}
+                            </el-tag>
+                            <el-tag title="命名空间">
+                                {{data.nameSpace}}
+                            </el-tag>
+                            <el-tag title="资源名">
+                                {{data.item.metadata.name}}
+                            </el-tag>
+                        </div>
+                    </div>
+                </template>
+                <div id="mynetwork"></div>
+<!--                <template #footer>-->
+<!--                    <div >-->
+<!--                        <el-button type="primary" @click="rollback=false">取消</el-button>-->
+<!--                        <el-button  type="primary"  @click="rollbackDeployment" >确认</el-button>-->
+<!--                    </div>-->
+<!--                </template>-->
+            </el-dialog>
         </template>
     </List>
 
@@ -78,14 +109,21 @@ import {deleteDeployment, getDeploymentList} from "../../api/scheduler/deploymen
 import DialogYaml from "../components/dialogYaml/dialogYaml.vue";
 import {useRouter} from 'vue-router'
 import GenericOptions from "../components/genericOptions.vue";
-import {getIngressList} from "../../api/scheduler/ingress/ingress.js";
+import {getIngressList, getIngressTopologyApi} from "../../api/scheduler/ingress/ingress.js";
+import CodeMirror from "../components/codeMirror.vue";
+import { Network } from 'vis-network'
+import { DataSet } from 'vis-data'
+
+
 const router=useRouter()
 
 const detailDialog=ref(false)
+const showTopologyVisable=ref(false)
 const data=reactive({
     clusterId:"",
     nameSpace:"",
     items:[],
+    item:Object,
     yamlData:"",
 })
 const search = ref('')
@@ -97,6 +135,51 @@ const filterTableData = computed(() =>
             item.metadata.name.toLowerCase().includes(search.value.toLowerCase())
     )
 )
+const showTopology= async (row)=>{
+    showTopologyVisable.value=true
+    data.item=row
+    const param={
+        clusterId: data.clusterId,
+        nameSpace: data.nameSpace,
+        name: row.metadata.name
+    }
+    var nodes =null
+    var edges=null
+    await getIngressTopologyApi(param).then((res)=>{
+        nodes=res.data.data.nodes
+        edges=res.data.data.edges
+    })
+
+
+
+
+    // create a network
+    const container = document.getElementById("mynetwork");
+    var dataIngress = {
+        nodes: nodes,
+        edges: edges,
+    };
+    const options = {
+        edges:{
+            arrows:{
+                to: {
+                    enabled: true
+                }
+            }
+        },
+        nodes:{
+            shadow:true
+        },
+        layout:{
+            hierarchical:{
+                direction:"UD",
+                sortMethod: "directed",
+                levelSeparation:100,
+            }
+        }
+    };
+    const network = new Network(container, dataIngress, options);
+}
 const nsCallBack=(clusterId,nameSpace)=>{
     data.clusterId=clusterId
     data.nameSpace=nameSpace
@@ -126,5 +209,12 @@ const detailNode=(row)=>{
 </script>
 
 <style scoped>
-
+.el-tag{
+    margin-left: 20px;
+}
+#mynetwork {
+    width: 100%;
+    height: 400px;
+    border: 1px solid lightgray;
+}
 </style>

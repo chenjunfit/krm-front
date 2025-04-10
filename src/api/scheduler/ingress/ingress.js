@@ -16,6 +16,11 @@ export const getIngress=(data)=>{
         5000
     )
 }
+export const getIngressTopologyApi=(data)=>{
+    return request(API_CONFIG.ingressTopologyApi,'get',data,
+        5000
+    )
+}
 export const deleteIngress=(id)=>{
     return request(API_CONFIG.ingressDeleteApi,'post',{id},
         5000
