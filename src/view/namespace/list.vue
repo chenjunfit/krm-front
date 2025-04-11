@@ -78,22 +78,6 @@
 
             </el-dialog>
             <el-dialog
-                v-model="detailDialog"
-                :append-to-body="true"
-                :title="clusterId+'-'+detailNodeName"
-                :center="true"
-                width="60%"
-                @close="closeDialog"
-                destroy-on-close
-            >
-                <Detail :DetailItem="detailItem"
-                        @close-dialog-emit="closeDialogEmit"
-                >
-
-                </Detail>
-
-            </el-dialog>
-            <el-dialog
                 v-model="createDialog"
                 :append-to-body="true"
                 title="创建命名空间"
@@ -175,6 +159,52 @@
                 </div>
 
             </el-dialog>
+            <el-dialog
+                v-model="detailDialog"
+                title="详情"
+                width="60%"
+                @before-close="closeDialog"
+                destroy-on-close
+            >
+                <template #header="{titleId, titleClass }">
+                    <div class="my-header">
+                        <div :id="titleId" :class="titleClass">
+                            <el-button type="primary" >
+                                <i class="iconfont icon-bushu" style="width: 50px"/>
+                                <div>{{data.clusterId}}</div>
+                            </el-button>
+                            <el-button type="primary" >
+                                <i class="iconfont icon-rongqi" style="width: 50px"/>
+                                <div>{{data.detailItem.metadata.name}}</div>
+                            </el-button>
+                        </div>
+                    </div>
+                </template>
+                <div class="auto-layout">
+                    <div v-for="item in data.namespaceDetailList" :key="item.resourceType" >
+                        <el-card style="width: 300px;margin-bottom: 20px;margin-left: 10px">
+                            <template #header>
+                                    <span>{{item.resourceType}}</span>
+                            </template>
+                            <div>
+                                <div class="auto-space-between">
+                                    <el-icon :size="50">
+                                        <i :class="`iconfont icon-`+item.resourceType"></i>
+                                    </el-icon>
+                                    <router-link :to="{path:'/'+item.resourceType+'/list',
+                                    query:{
+                                        clusterId:data.clusterId,
+                                        nameSpace:data.detailItem.metadata.name
+                                    }
+                                    }">
+                                        {{item.total}}
+                                    </router-link>
+                                </div>
+                            </div>
+                        </el-card>
+                    </div>
+                </div>
+            </el-dialog>
         </template>
     </el-card>
 
@@ -186,7 +216,7 @@ import {
     getNamespaceList,
     addNamespace,
     deleteNamespace,
-    copyNamespaceHandler
+    copyNamespaceHandler, getNameSpaceDetail
 } from "../../api/cluster/cluster.js";
 import {computed, onBeforeMount, reactive, ref, toRefs} from "vue";
 import {Check,Close} from "@element-plus/icons-vue";
@@ -216,7 +246,7 @@ const data=reactive({
     createName:"",
     deleteName:"",
     deleteNameConfirm:"",
-
+    namespaceDetailList:[],
     copyForm:{
         clusterId:"",
         namespace:"",
@@ -276,7 +306,6 @@ const submitNameSpaceCopy= async ()=>{
 const tabClick= async (paneName,event)=>{
     if(paneName.paneName!="copyDest"){
        await listHandler(paneName.paneName,data.copyForm.clusterId,data.copyForm.namespace).then((res)=>{
-           console.log(paneName.paneName,data.copyForm.clusterId,data.copyForm.namespace)
            const items=res.data.data.items
            const itemListName=[]
            if(items!=null){
@@ -333,11 +362,13 @@ const updateNamespace=(row)=>{
     data.editNodeName=data.editItem.metadata.name
     loading.value=false
 }
-const detailNode=(row)=>{
+const detailNode=async (row)=>{
     loading.value=true
     detailDialog.value=true
     data.detailItem=row
-    data.detailNodeName=data.detailItem.metadata.name
+    await getNameSpaceDetail(data.clusterId,row.metadata.name).then((res)=>{
+        data.namespaceDetailList=res.data.data.items
+    })
     loading.value=false
 }
 
@@ -388,7 +419,7 @@ const submitDeleteNamespace=(clusterId,name)=>{
                 message:response.data.message,
                 type:"success"
             })
-            getNamespaceListHandler()
+            getNamespaceListHandfler()
         }else{
             ElMessage({
                 message:response.data.message,

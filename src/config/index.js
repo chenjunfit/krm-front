@@ -13,11 +13,13 @@ export const API_CONFIG={
     clusterCreateAPi:`${BASE_URL}/cluster/add`,
     clusterUpdateApi:`${BASE_URL}/cluster/update`,
     clusterGetApi:`${BASE_URL}/cluster/get`,
+    clusterDetailApi:`${BASE_URL}/cluster/detail`,
     //节点相关的api
     nodeListApi:`${BASE_URL}/node/list`,
     nodeGetApi:`${BASE_URL}/node/get`,
     nodeUpdateApi:`${BASE_URL}/node/update`,
     //namespace相关的api
+    namespaceDetailApi:`${BASE_URL}/namespace/detail`,
     namespaceListApi:`${BASE_URL}/namespace/list`,
     namespaceCreateApi:`${BASE_URL}/namespace/add`,
     namespaceUpdateApi:`${BASE_URL}/namespace/update`,

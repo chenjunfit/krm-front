@@ -276,7 +276,6 @@ const restartItem=()=>{
             }
         )
             .then(async () => {
-                    console.log(props.ResourceType,props.name,props.clusterId,props.nameSpace)
                     await restartHandler(props.ResourceType,props.name,props.clusterId,props.nameSpace).then((res)=>{
                             ElMessage.success(res.data.message)
                     }).catch((res)=>{

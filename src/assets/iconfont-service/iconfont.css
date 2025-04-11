@@ -36,6 +36,10 @@
 .icon-fuwufabuguanli:before {
   content: "\e674";
 }
+.icon-daemonset:before {
+  content: "\e674";
+}
+
 
 .icon-k8S-pv:before {
   content: "\e7db";
@@ -46,6 +50,9 @@
 }
 
 .icon-k8s_service:before {
+  content: "\e650";
+}
+.icon-service:before {
   content: "\e650";
 }
 

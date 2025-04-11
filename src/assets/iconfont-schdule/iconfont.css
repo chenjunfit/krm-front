@@ -16,6 +16,9 @@
 .icon-deploymentunit:before {
   content: "\e7d2";
 }
+.icon-deployment:before {
+  content: "\e7d2";
+}
 
 .icon-zhuangtai:before {
   content: "\e629";
@@ -28,16 +31,27 @@
 .icon-rongqi:before {
   content: "\e63b";
 }
+.icon-pod:before {
+  content: "\e63b";
+}
 
 .icon-bushu:before {
   content: "\e67a";
 }
-
+.icon-node:before {
+  content: "\e67a";
+}
+.icon-statefulset:before {
+  content: "\e67a";
+}
 .icon-renwu:before {
   content: "\e60b";
 }
 
 .icon-tiaoduguanli:before {
+  content: "\e676";
+}
+.icon-namespace:before {
   content: "\e676";
 }
 

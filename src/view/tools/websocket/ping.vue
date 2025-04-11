@@ -23,7 +23,6 @@ onBeforeMount(()=>{
     }
     ws.onerror=function (){
         console.log("链接错误时的事件")
-        console.log(ws)
     }
     ws.onclose=function (){
         console.log("链接关闭时的事件")

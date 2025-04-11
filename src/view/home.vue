@@ -60,7 +60,6 @@ const {items}=toRefs(data)
 onBeforeMount(async ()=>{
     await getClusterStatics().then((res)=>{
         data.items=res.data.data.items
-        console.log(data.items)
     })
 })
 </script>

@@ -17,6 +17,16 @@ export const getCluster=(clusterId)=>{
         5000
     )
 }
+export const getClusterDetail=(clusterId)=>{
+    return request(API_CONFIG.clusterDetailApi,'get',{clusterId},
+        5000
+    )
+}
+export const getNameSpaceDetail=(clusterId,name)=>{
+    return request(API_CONFIG.namespaceDetailApi,'get',{clusterId,name},
+        10000
+    )
+}
 export const deleteCluster=(clusterId)=>{
     return request(API_CONFIG.clusterDeleteApi,'get',{clusterId},
         5000
