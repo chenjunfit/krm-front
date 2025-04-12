@@ -1,0 +1,18 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: krm-front
+  namespace: meta-namespace
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: krm-front
+  template:
+    metadata:
+      labels:
+        app: krm-front
+    spec:
+      containers:
+        - name: krm-backend
+          image: registry.cn-hangzhou.aliyuncs.com/cj_dev/krm-front:v1
