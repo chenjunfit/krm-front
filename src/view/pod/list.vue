@@ -294,8 +294,11 @@ const handleDrawerClose=()=>{
     drawer.value=false
     if(currentOption.value=="exec"){
         term.dispose()
+        document.getElementById('terminal').innerHTML = '';
+        term=null
+        ws.close()
     }
-    ws.close()
+
 }
 const podExec=(row,tag)=>{
     currentOption.value=tag
@@ -305,6 +308,9 @@ const podExec=(row,tag)=>{
     let url=`${config.podExecAPi}?clusterId=${data.clusterId}&nameSpace=${data.namespace}&name=${row.metadata.name}&container=${currentContainer.value}&defaultComamnd=/bin/sh`
     url=url.replace("http","ws")
     createWebSocket(url,tag)
+    term = new Terminal(data.termOptions);
+    fitAddon=new FitAddon()
+    term.loadAddon(fitAddon)
     const attachaddon=new AttachAddon(ws)
     const oldSend=attachaddon._sendData
     attachaddon._sendData=(data)=>{
